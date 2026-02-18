@@ -204,6 +204,42 @@ export async function getToolsByIds(ids: string[]): Promise<Tool[]> {
   }
 }
 
+export async function getAllToolSlugs(): Promise<string[]> {
+  try {
+    const { data, error } = await supabase
+      .from('tools')
+      .select('slug');
+    if (error) return [];
+    return (data || []).map((t: { slug: string }) => t.slug);
+  } catch {
+    return [];
+  }
+}
+
+export async function getAllCategorySlugs(): Promise<string[]> {
+  try {
+    const { data, error } = await supabase
+      .from('categories')
+      .select('slug');
+    if (error) return [];
+    return (data || []).map((c: { slug: string }) => c.slug);
+  } catch {
+    return [];
+  }
+}
+
+export async function getAllCollectionSlugs(): Promise<string[]> {
+  try {
+    const { data, error } = await supabase
+      .from('collections')
+      .select('slug');
+    if (error) return [];
+    return (data || []).map((c: { slug: string }) => c.slug);
+  } catch {
+    return [];
+  }
+}
+
 export async function getAlternativesFor(tool: Tool, limit = 12): Promise<Tool[]> {
   try {
     const { data, error } = await supabase

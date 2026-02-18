@@ -53,6 +53,21 @@ export function getPlatformIcon(platform: string): string {
   }
 }
 
+export function getInstallCommand(tool: { npm_url?: string | null; pypi_url?: string | null; github_url?: string | null }): { label: string; command: string } | null {
+  if (tool.npm_url) {
+    const pkg = tool.npm_url.replace(/\/$/, '').split('/package/').pop() || tool.npm_url.replace(/\/$/, '').split('/').pop();
+    if (pkg) return { label: 'npm', command: `npm install ${pkg}` };
+  }
+  if (tool.pypi_url) {
+    const pkg = tool.pypi_url.replace(/\/$/, '').split('/').pop();
+    if (pkg) return { label: 'pip', command: `pip install ${pkg}` };
+  }
+  if (tool.github_url) {
+    return { label: 'git', command: `git clone ${tool.github_url}` };
+  }
+  return null;
+}
+
 export function getDifficultyColor(difficulty: string): string {
   switch (difficulty) {
     case 'easy': return 'text-emerald-700 bg-emerald-50';

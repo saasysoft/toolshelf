@@ -27,7 +27,8 @@ export default function Footer() {
             <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Resources</h3>
             <ul className="mt-3 space-y-2">
               <li><Link href="/search" className="text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">Search</Link></li>
-              <li><Link href="/collections/claude-code-starter-kit" className="text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">Collections</Link></li>
+              <li><Link href="/collections" className="text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">Collections</Link></li>
+              <li><Link href="/submit" className="text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">Submit a Tool</Link></li>
             </ul>
           </div>
           <div className="col-span-2 md:col-span-2">

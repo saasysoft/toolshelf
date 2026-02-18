@@ -1,12 +1,12 @@
 import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import { getToolBySlug, getRelatedTools } from '@/lib/queries';
+import { getToolBySlug, getRelatedTools, getCollections, getAllToolSlugs } from '@/lib/queries';
 import QualityBadge from '@/components/QualityBadge';
 import MaintenanceBadge from '@/components/MaintenanceBadge';
 import PlatformBadges from '@/components/PlatformBadges';
 import ToolGrid from '@/components/ToolGrid';
-import { formatNumber, formatDate, getDifficultyColor } from '@/lib/utils';
+import { formatNumber, formatDate, getDifficultyColor, getInstallCommand } from '@/lib/utils';
 
 interface Props {
   params: Promise<{ slug: string }>;
@@ -35,7 +35,16 @@ export default async function ToolPage({ params }: Props) {
   const tool = await getToolBySlug(slug);
   if (!tool) notFound();
 
-  const related = await getRelatedTools(tool);
+  const [related, collections, allSlugs] = await Promise.all([
+    getRelatedTools(tool),
+    getCollections(),
+    getAllToolSlugs(),
+  ]);
+
+  const slugSet = new Set(allSlugs);
+  const toolCollections = collections.filter((c) => c.tool_ids.includes(tool.id));
+  const installCmd = getInstallCommand(tool);
+  const firstRelatedSlug = related[0]?.slug;
 
   return (
     <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
@@ -51,7 +60,7 @@ export default async function ToolPage({ params }: Props) {
       </nav>
 
       {/* Hero */}
-      <div className="mb-8">
+      <div className="mb-4">
         <div className="flex flex-wrap items-start gap-4">
           <div className="min-w-0 flex-1">
             <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">{tool.name}</h1>
@@ -66,16 +75,34 @@ export default async function ToolPage({ params }: Props) {
         </div>
       </div>
 
+      {/* Quick Actions Bar */}
+      <div className="mb-8 flex flex-wrap gap-2">
+        <Link
+          href={`/alternatives/${tool.slug}`}
+          className="inline-flex items-center rounded-full border border-violet-200 bg-violet-50 px-4 py-1.5 text-sm font-medium text-violet-700 transition-colors hover:bg-violet-100 dark:border-violet-800 dark:bg-violet-900/30 dark:text-violet-400 dark:hover:bg-violet-900/50"
+        >
+          See Alternatives
+        </Link>
+        {firstRelatedSlug && (
+          <Link
+            href={`/compare/${tool.slug}-vs-${firstRelatedSlug}`}
+            className="inline-flex items-center rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-sm font-medium text-blue-700 transition-colors hover:bg-blue-100 dark:border-blue-800 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50"
+          >
+            Compare...
+          </Link>
+        )}
+      </div>
+
       {/* Stats Row */}
       <div className="mb-8 flex flex-wrap gap-6 rounded-xl border border-zinc-200 bg-zinc-50 p-5 dark:border-zinc-800 dark:bg-zinc-900/50">
         {tool.github_stars > 0 && (
-          <Stat label="Stars" value={formatNumber(tool.github_stars)} />
+          <Stat label="Stars" value={formatNumber(tool.github_stars)} highlight />
         )}
         {tool.npm_weekly_downloads && (
-          <Stat label="Weekly Downloads" value={formatNumber(tool.npm_weekly_downloads)} />
+          <Stat label="Weekly Downloads" value={formatNumber(tool.npm_weekly_downloads)} highlight />
         )}
         {tool.pypi_monthly_downloads && (
-          <Stat label="Monthly Downloads" value={formatNumber(tool.pypi_monthly_downloads)} />
+          <Stat label="Monthly Downloads" value={formatNumber(tool.pypi_monthly_downloads)} highlight />
         )}
         {tool.last_release && (
           <Stat label="Latest" value={tool.last_release} />
@@ -87,7 +114,7 @@ export default async function ToolPage({ params }: Props) {
           <Stat label="License" value={tool.license} />
         )}
         {tool.contributor_count > 0 && (
-          <Stat label="Contributors" value={formatNumber(tool.contributor_count)} />
+          <Stat label="Contributors" value={formatNumber(tool.contributor_count)} highlight />
         )}
       </div>
 
@@ -98,6 +125,17 @@ export default async function ToolPage({ params }: Props) {
           {tool.description && (
             <div className="prose prose-zinc mb-8 max-w-none dark:prose-invert">
               <p>{tool.description}</p>
+            </div>
+          )}
+
+          {/* Getting Started */}
+          {installCmd && (
+            <div className="mb-8">
+              <h2 className="mb-3 text-lg font-semibold text-zinc-900 dark:text-zinc-100">Getting Started</h2>
+              <div className="rounded-lg border border-zinc-200 bg-zinc-950 p-4 dark:border-zinc-700">
+                <div className="mb-1 text-xs text-zinc-500">{installCmd.label}</div>
+                <code className="text-sm text-emerald-400">{installCmd.command}</code>
+              </div>
             </div>
           )}
         </div>
@@ -144,11 +182,19 @@ export default async function ToolPage({ params }: Props) {
             <div className="rounded-xl border border-zinc-200 p-5 dark:border-zinc-800">
               <h3 className="mb-3 text-sm font-semibold text-zinc-900 dark:text-zinc-100">Works With</h3>
               <div className="flex flex-wrap gap-1.5">
-                {tool.works_with.map((w) => (
-                  <span key={w} className="rounded-md bg-blue-50 px-2 py-0.5 text-xs text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
-                    {w}
-                  </span>
-                ))}
+                {tool.works_with.map((w) => {
+                  const wSlug = w.toLowerCase().replace(/\s+/g, '-');
+                  const isLinked = slugSet.has(wSlug);
+                  return isLinked ? (
+                    <Link key={w} href={`/tools/${wSlug}`} className="rounded-md bg-blue-50 px-2 py-0.5 text-xs text-blue-700 hover:bg-blue-100 dark:bg-blue-900/30 dark:text-blue-400 dark:hover:bg-blue-900/50">
+                      {w}
+                    </Link>
+                  ) : (
+                    <span key={w} className="rounded-md bg-blue-50 px-2 py-0.5 text-xs text-blue-700 dark:bg-blue-900/30 dark:text-blue-400">
+                      {w}
+                    </span>
+                  );
+                })}
               </div>
             </div>
           )}
@@ -158,10 +204,32 @@ export default async function ToolPage({ params }: Props) {
             <div className="rounded-xl border border-zinc-200 p-5 dark:border-zinc-800">
               <h3 className="mb-3 text-sm font-semibold text-zinc-900 dark:text-zinc-100">Alternative To</h3>
               <div className="flex flex-wrap gap-1.5">
-                {tool.alternative_to.map((a) => (
-                  <span key={a} className="rounded-md bg-violet-50 px-2 py-0.5 text-xs text-violet-700 dark:bg-violet-900/30 dark:text-violet-400">
-                    {a}
-                  </span>
+                {tool.alternative_to.map((a) => {
+                  const aSlug = a.toLowerCase().replace(/\s+/g, '-');
+                  const isLinked = slugSet.has(aSlug);
+                  return isLinked ? (
+                    <Link key={a} href={`/tools/${aSlug}`} className="rounded-md bg-violet-50 px-2 py-0.5 text-xs text-violet-700 hover:bg-violet-100 dark:bg-violet-900/30 dark:text-violet-400 dark:hover:bg-violet-900/50">
+                      {a}
+                    </Link>
+                  ) : (
+                    <Link key={a} href={`/alternatives/${tool.slug}`} className="rounded-md bg-violet-50 px-2 py-0.5 text-xs text-violet-700 hover:bg-violet-100 dark:bg-violet-900/30 dark:text-violet-400 dark:hover:bg-violet-900/50">
+                      {a}
+                    </Link>
+                  );
+                })}
+              </div>
+            </div>
+          )}
+
+          {/* In Collections */}
+          {toolCollections.length > 0 && (
+            <div className="rounded-xl border border-zinc-200 p-5 dark:border-zinc-800">
+              <h3 className="mb-3 text-sm font-semibold text-zinc-900 dark:text-zinc-100">In Collections</h3>
+              <div className="space-y-1.5">
+                {toolCollections.map((c) => (
+                  <Link key={c.id} href={`/collections/${c.slug}`} className="block text-sm text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
+                    {c.title}
+                  </Link>
                 ))}
               </div>
             </div>
@@ -183,10 +251,19 @@ export default async function ToolPage({ params }: Props) {
         </div>
       </div>
 
-      {/* Related Tools */}
+      {/* Similar Tools */}
       {related.length > 0 && (
         <div className="mt-12 border-t border-zinc-200 pt-8 dark:border-zinc-800">
-          <ToolGrid tools={related} title="Related Tools" />
+          <div className="mb-6 flex items-center justify-between">
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Similar Tools</h2>
+            <Link
+              href={`/alternatives/${tool.slug}`}
+              className="text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
+            >
+              See all alternatives &rarr;
+            </Link>
+          </div>
+          <ToolGrid tools={related} />
         </div>
       )}
 
@@ -219,11 +296,11 @@ export default async function ToolPage({ params }: Props) {
   );
 }
 
-function Stat({ label, value }: { label: string; value: string }) {
+function Stat({ label, value, highlight }: { label: string; value: string; highlight?: boolean }) {
   return (
     <div>
       <dt className="text-xs text-zinc-500 dark:text-zinc-400">{label}</dt>
-      <dd className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">{value}</dd>
+      <dd className={`font-semibold text-zinc-900 dark:text-zinc-100 ${highlight ? 'text-base' : 'text-sm'}`}>{value}</dd>
     </div>
   );
 }
