@@ -1,0 +1,45 @@
+[
+  {
+    "slug": "claude-code-starter-kit",
+    "title": "Claude Code Starter Kit",
+    "description": "Essential MCP servers and tools to supercharge your Claude Code workflow",
+    "tool_slugs": [
+      "filesystem-mcp",
+      "github-mcp",
+      "sequential-thinking-mcp",
+      "claude-code",
+      "ripgrep",
+      "lazygit"
+    ]
+  },
+  {
+    "slug": "rust-cli-replacements",
+    "title": "Rust CLI Replacements",
+    "description": "Modern Rust rewrites of classic Unix tools — faster, friendlier, and better defaults",
+    "tool_slugs": [
+      "ripgrep",
+      "fd",
+      "bat",
+      "eza",
+      "delta",
+      "dust",
+      "hyperfine",
+      "zoxide"
+    ]
+  },
+  {
+    "slug": "self-hosted-stack",
+    "title": "The Self-Hosted Stack",
+    "description": "Everything you need to run your own cloud: hosting, monitoring, auth, storage, and automation",
+    "tool_slugs": [
+      "coolify",
+      "supabase",
+      "traefik",
+      "uptime-kuma",
+      "grafana",
+      "authentik",
+      "minio",
+      "n8n"
+    ]
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "slug": "mcp-servers",
+    "name": "MCP Servers & Claude Plugins",
+    "description": "Model Context Protocol servers that extend AI assistants with real-world capabilities",
+    "icon": "🔌",
+    "display_order": 1
+  },
+  {
+    "slug": "cli-tools",
+    "name": "CLI Tools & Terminal",
+    "description": "Modern command-line tools that supercharge your terminal workflow",
+    "icon": "⌨️",
+    "display_order": 2
+  },
+  {
+    "slug": "ai-coding",
+    "name": "AI Coding Tools & Agents",
+    "description": "AI-powered tools that write, review, and debug code alongside you",
+    "icon": "🤖",
+    "display_order": 3
+  },
+  {
+    "slug": "self-hosted",
+    "name": "Self-Hosted Software",
+    "description": "Open-source software you can run on your own infrastructure",
+    "icon": "🏠",
+    "display_order": 4
+  },
+  {
+    "slug": "developer-productivity",
+    "name": "Developer Productivity",
+    "description": "Tools that streamline your development workflow and boost efficiency",
+    "icon": "⚡",
+    "display_order": 5
+  }
+]
