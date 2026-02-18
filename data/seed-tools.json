@@ -1455,5 +1455,24 @@
     "alternative_to": ["iterm2", "alacritty", "wezterm"],
     "install_difficulty": "easy",
     "featured": false
+  },
+  {
+    "name": "ToolShelf",
+    "slug": "toolshelf",
+    "tagline": "Curated developer tools directory with AI-enriched quality scores",
+    "description": "ToolShelf is an open-source directory of developer tools featuring AI-enriched quality scores, maintenance status tracking, and compatibility data. Built with Next.js, Supabase, and Tailwind CSS, it helps developers discover and compare the best tools for their workflow.",
+    "category": "developer-productivity",
+    "subcategories": ["discovery", "developer-tools"],
+    "website_url": "https://toolshelf.dev",
+    "github_url": "https://github.com/saasysoft/toolshelf",
+    "npm_url": null,
+    "pricing": "open-source",
+    "license": "MIT",
+    "languages": ["typescript"],
+    "platforms": ["windows", "mac", "linux"],
+    "works_with": ["browser"],
+    "alternative_to": ["awesome-lists", "alternativeto", "stackshare"],
+    "install_difficulty": "easy",
+    "featured": true
   }
 ]

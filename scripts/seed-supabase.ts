@@ -58,13 +58,19 @@ async function main() {
     }
   }
 
-  // Refresh category counts
-  const { error: rpcError } = await supabase.rpc('refresh_category_counts');
-  if (rpcError) {
-    console.error('Error refreshing category counts:', rpcError);
-  } else {
-    console.log('Category counts refreshed.');
+  // Refresh category counts (direct update to bypass RLS/PostgREST WHERE clause restriction)
+  const { data: catRows } = await supabase.from('categories').select('slug');
+  for (const cat of catRows || []) {
+    const { count } = await supabase
+      .from('tools')
+      .select('*', { count: 'exact', head: true })
+      .eq('category', cat.slug);
+    await supabase
+      .from('categories')
+      .update({ tool_count: count ?? 0 })
+      .eq('slug', cat.slug);
   }
+  console.log('Category counts refreshed.');
 
   // Load and seed collections
   const collectionsPath = path.join(__dirname, '..', 'data', 'seed-collections.json');

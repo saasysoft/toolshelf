@@ -43,3 +43,5 @@ data/enriched-tools.json
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+.vercel
