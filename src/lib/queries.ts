@@ -163,3 +163,59 @@ export async function getCollections(): Promise<Collection[]> {
     return [];
   }
 }
+
+export async function getCollectionBySlug(slug: string): Promise<Collection | null> {
+  try {
+    const { data, error } = await supabase
+      .from('collections')
+      .select('*')
+      .eq('slug', slug)
+      .single();
+    if (error) return null;
+    return data as Collection;
+  } catch {
+    return null;
+  }
+}
+
+export async function getToolsBySlugs(slugs: string[]): Promise<Tool[]> {
+  try {
+    const { data, error } = await supabase
+      .from('tools')
+      .select('*')
+      .in('slug', slugs);
+    if (error) return [];
+    return (data as Tool[]) || [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getToolsByIds(ids: string[]): Promise<Tool[]> {
+  try {
+    const { data, error } = await supabase
+      .from('tools')
+      .select('*')
+      .in('id', ids);
+    if (error) return [];
+    return (data as Tool[]) || [];
+  } catch {
+    return [];
+  }
+}
+
+export async function getAlternativesFor(tool: Tool, limit = 12): Promise<Tool[]> {
+  try {
+    const { data, error } = await supabase
+      .from('tools')
+      .select('*')
+      .or(`alternative_to.cs.{${tool.slug}},category.eq.${tool.category}`)
+      .neq('slug', tool.slug)
+      .order('quality_score', { ascending: false })
+      .limit(limit);
+    if (error) return [];
+    return (data as Tool[]) || [];
+  } catch {
+    return [];
+  }
+}
