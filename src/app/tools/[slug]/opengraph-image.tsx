@@ -145,7 +145,9 @@ export default async function OGImage({ params }: { params: Promise<{ slug: stri
           {/* Stars */}
           {tool.github_stars > 0 && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '6px' }}>
-              <span style={{ fontSize: '22px', color: '#eab308' }}>★</span>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="#eab308">
+                <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
+              </svg>
               <span style={{ fontSize: '22px', fontWeight: 600, color: '#d4d4d8' }}>
                 {formatNumber(tool.github_stars)}
               </span>
