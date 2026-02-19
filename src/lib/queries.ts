@@ -3,7 +3,7 @@ import type { Tool, Category, Collection, ToolFilters } from '@/types/tool';
 
 const TOOLS_PER_PAGE = 24;
 
-export async function getTools(filters: ToolFilters = {}, page = 1): Promise<{ tools: Tool[]; count: number }> {
+export async function getTools(filters: ToolFilters = {}, page = 1, perPage = TOOLS_PER_PAGE): Promise<{ tools: Tool[]; count: number }> {
   try {
     let query = supabase.from('tools').select('*', { count: 'exact' });
 
@@ -33,8 +33,8 @@ export async function getTools(filters: ToolFilters = {}, page = 1): Promise<{ t
     const ascending = sort === 'name';
     query = query.order(sort, { ascending });
 
-    const from = (page - 1) * TOOLS_PER_PAGE;
-    query = query.range(from, from + TOOLS_PER_PAGE - 1);
+    const from = (page - 1) * perPage;
+    query = query.range(from, from + perPage - 1);
 
     const { data, error, count } = await query;
     if (error) {
@@ -129,10 +129,10 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
   }
 }
 
-export async function searchTools(query: string, page = 1, filters: ToolFilters = {}): Promise<{ tools: Tool[]; count: number }> {
+export async function searchTools(query: string, page = 1, filters: ToolFilters = {}, perPage = TOOLS_PER_PAGE): Promise<{ tools: Tool[]; count: number }> {
   try {
     const tsQuery = query.trim().split(/\s+/).join(' & ');
-    const from = (page - 1) * TOOLS_PER_PAGE;
+    const from = (page - 1) * perPage;
 
     let q = supabase
       .from('tools')
@@ -156,7 +156,7 @@ export async function searchTools(query: string, page = 1, filters: ToolFilters 
     const ascending = sort === 'name';
     q = q.order(sort, { ascending });
 
-    q = q.range(from, from + TOOLS_PER_PAGE - 1);
+    q = q.range(from, from + perPage - 1);
 
     const { data, error, count } = await q;
 
