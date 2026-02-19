@@ -33,5 +33,40 @@
     "description": "Tools that streamline your development workflow and boost efficiency",
     "icon": "⚡",
     "display_order": 5
+  },
+  {
+    "slug": "data-tools",
+    "name": "Data & Database Tools",
+    "description": "Tools for working with databases, data pipelines, OCR, and structured data",
+    "icon": "🗃️",
+    "display_order": 6
+  },
+  {
+    "slug": "devops-infra",
+    "name": "DevOps & Infrastructure",
+    "description": "Deployment, monitoring, containers, and infrastructure management tools",
+    "icon": "🚀",
+    "display_order": 7
+  },
+  {
+    "slug": "security",
+    "name": "Security & Auth",
+    "description": "Authentication, encryption, vulnerability scanning, and security tools",
+    "icon": "🔒",
+    "display_order": 8
+  },
+  {
+    "slug": "media-design",
+    "name": "Media & Design Tools",
+    "description": "Image, video, audio processing, UI frameworks, and design utilities",
+    "icon": "🎨",
+    "display_order": 9
+  },
+  {
+    "slug": "automation",
+    "name": "Automation & Workflows",
+    "description": "Bots, scrapers, workflow engines, and task automation tools",
+    "icon": "⚙️",
+    "display_order": 10
   }
 ]
