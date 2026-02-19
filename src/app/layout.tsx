@@ -28,6 +28,10 @@ export const metadata: Metadata = {
       'Discover the best developer tools with AI-enriched quality scores and maintenance data.',
     siteName: 'ToolShelf',
     type: 'website',
+    images: [{ url: '/og', width: 1200, height: 630 }],
+  },
+  twitter: {
+    card: 'summary_large_image',
   },
 };
 
