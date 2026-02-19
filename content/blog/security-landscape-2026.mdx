@@ -1,13 +1,14 @@
 ---
-title: "The Security and Auth Landscape in 2026"
-description: "A comprehensive look at the security and auth ecosystem — 12 tools analyzed with trends, pricing breakdown, and top picks."
+title: "The Security Tools Landscape in 2026"
+description: "A comprehensive look at the security tools ecosystem — 12 tools analyzed with trends, pricing breakdown, and top picks."
 date: "2026-02-19"
 category: "security"
 tags: ["security", "landscape", "deep-dive", "2026"]
-published: false
+type: "deep-dive"
+published: true
 ---
 
-The security and auth space is thriving in 2026. ToolShelf tracks **12 tools** in this category. Here's what the landscape looks like.
+Security is ToolShelf's smallest category at just **12 tools** — but that number understates its importance. Every self-hosted deployment, every API endpoint, and every container in our other categories depends on the tools tracked here. The security landscape in 2026 is defined by a shift toward developer-friendly tooling that makes doing the right thing easier than doing the wrong thing.
 
 ## By the Numbers
 
@@ -16,29 +17,42 @@ The security and auth space is thriving in 2026. ToolShelf tracks **12 tools** i
 - **1** free or freemium
 - **0** paid
 
-## Top Rated Tools
-
-1. **[Traefik](/tools/traefik)** — A modern reverse proxy and load balancer for microservices (Score: 61)
-2. **[Authentik](/tools/authentik)** — Open-source identity provider with flows, policies, and SSO (Score: 46)
-3. **[Fnox](/tools/fnox)** — encrypted/remote secret manager (Score: 37)
-4. **[Secluso](/tools/secluso)** — A privacy-preserving home security camera that uses end-to-end encryption. (Secluso was previously named Privastead.) (Score: 33)
-5. **[Ghostcrew](/tools/ghostcrew)** — PentestAgent is an AI agent framework for black-box security testing, supporting bug bounty, red-team, and penetratio... (Score: 33)
+Almost entirely open-source. Security tooling has embraced the transparency argument fully: if your security depends on code nobody can audit, you have a problem, not a solution.
 
 ## Key Trends
 
-{/* TODO: Add editorial insights about category trends */}
+### 1. Identity as Infrastructure
 
-1. **Trend 1** — Description
-2. **Trend 2** — Description
-3. **Trend 3** — Description
+[Authentik](/tools/authentik) represents the most significant shift in this category. Rather than bolting auth onto applications after the fact, teams are deploying Authentik as a central identity provider with SSO, MFA, SCIM provisioning, and customizable authentication flows. It replaces Auth0 and Okta for self-hosted teams, and its policy engine lets you define access rules in a visual flow builder rather than scattered middleware code. The days of rolling your own JWT validation in every service are numbered.
+
+### 2. Smart Reverse Proxies as Security Layers
+
+[Traefik](/tools/traefik) has evolved beyond simple reverse proxying into a full security gateway. Automatic service discovery from Docker labels, built-in rate limiting, middleware chains for authentication, and Let's Encrypt integration make it the first line of defense for microservice architectures. The key insight is that Traefik sits at the network edge where it can enforce security policies before requests ever reach application code — TLS termination, IP allowlisting, header manipulation, and circuit breaking all happen at the proxy layer.
+
+### 3. Shift-Left Security Tooling
+
+The broader industry trend of catching vulnerabilities earlier in the development cycle has produced tools that scan code and infrastructure before deployment. [React2Shell Scanner](/tools/react2shell-scanner) targets a specific but critical vector — detecting server-side code injection vulnerabilities in React applications before they reach production. This kind of focused, framework-specific scanner is more useful than generic SAST tools that drown developers in false positives.
+
+### 4. Physical Security Goes Open-Source
+
+An unexpected entrant: [Secluso](/tools/secluso) brings end-to-end encryption to home security cameras. In a market dominated by Ring and Nest — where footage lives on corporate servers and gets shared with law enforcement without warrants — Secluso keeps video encrypted on-device. It is a niche tool, but it signals that the open-source security mindset is expanding beyond software into hardware and IoT.
+
+## Top Picks
+
+| Tool | What It Does | Score |
+|------|-------------|-------|
+| [Traefik](/tools/traefik) | Reverse proxy and security gateway for microservices | 61 |
+| [Authentik](/tools/authentik) | Self-hosted identity provider with SSO and MFA | 46 |
+| [React2Shell Scanner](/tools/react2shell-scanner) | Vulnerability scanner for React SSR injection | -- |
+| [Secluso](/tools/secluso) | Privacy-first encrypted home security camera | 33 |
 
 ## Getting Started
 
-If you're new to security and auth, start with these approachable options:
+If you are deploying any self-hosted services, [Traefik](/tools/traefik) should be your reverse proxy — it handles TLS, routing, and basic security middleware in a single configuration. Pair it with [Authentik](/tools/authentik) to add SSO and centralized authentication across all your services, so users log in once and access everything.
 
-- **[Traefik](/tools/traefik)** — A modern reverse proxy and load balancer for microservices
-- **[Fnox](/tools/fnox)** — encrypted/remote secret manager
-- **[Secluso](/tools/secluso)** — A privacy-preserving home security camera that uses end-to-end encryption. (Secluso was previously named Privastead.)
+For application-level security, run [React2Shell Scanner](/tools/react2shell-scanner) in your CI pipeline if you ship React with server-side rendering.
+
+This category is small but growing. As self-hosted infrastructure adoption accelerates across our other categories, expect the security tooling ecosystem to expand alongside it.
 
 ---
 

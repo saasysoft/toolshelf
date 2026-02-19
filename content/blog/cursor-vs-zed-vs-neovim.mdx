@@ -1,46 +1,63 @@
 ---
 title: "Cursor vs Zed vs Neovim: AI Code Editors Compared"
-description: "A detailed comparison of Cursor, Zed, Neovim — features, pricing, and quality scores side by side."
+description: "A detailed comparison of the three most interesting code editors in 2026 — features, AI integration, performance, and which is right for you."
 date: "2026-02-19"
 category: "ai-coding"
 tags: ["comparison", "ai-coding", "cursor", "zed", "neovim"]
-published: false
+type: "comparison"
+published: true
 ---
 
-Choosing between **Cursor**, **Zed**, **Neovim**? Here's how they compare based on real data from ToolShelf.
+The code editor you choose shapes how you think about code. In 2026, three editors represent genuinely different philosophies: [Cursor](/tools/cursor) bets everything on AI, [Zed](/tools/zed) bets on performance and collaboration, and [Neovim](/tools/neovim) bets on extensibility and keyboard-driven efficiency.
+
+Here's how they actually compare when you use them daily.
 
 ## Quick Comparison
 
-| Tool | Pricing | Platforms | Quality Score | GitHub Stars |
-|------|---------|-----------|---------------|--------------|
-| **Cursor** | freemium | windows, mac, linux | 48 | 32.3k |
-| **Zed** | open-source | mac, linux | 61 | 75.6k |
-| **Neovim** | open-source | windows, mac, linux | 61 | 96.5k |
+| Feature | Cursor | Zed | Neovim |
+|---------|--------|-----|--------|
+| **Pricing** | Freemium ($20/mo pro) | Free (open-source) | Free (open-source) |
+| **AI Integration** | Built-in, deep | Emerging | Via plugins |
+| **Performance** | Good (Electron) | Excellent (native) | Excellent (terminal) |
+| **Extension Ecosystem** | VS Code extensions | Growing | Massive (Lua) |
+| **Learning Curve** | Low | Low | High |
+| **Collaboration** | Via AI | Built-in multiplayer | Via plugins |
+| **Platforms** | Mac, Windows, Linux | Mac, Linux, Windows | Everywhere |
 
-### Cursor
+## Cursor: The AI-Native Editor
 
-Cursor is a fork of VS Code with deeply integrated AI capabilities. It provides AI-powered code completion, multi-file editing with Composer, inline chat, and codebase-aware context. One of the most polished AI coding experiences available.
+[Cursor](/tools/cursor) is a fork of VS Code rebuilt around AI-assisted coding. Tab completion predicts your next edit across multiple lines, the composer can refactor entire files from natural language, and the chat understands your full codebase context.
 
-[Website](https://cursor.com) | [GitHub](https://github.com/getcursor/cursor)
+**Best for:** Developers who want maximum AI assistance and are already comfortable with VS Code. The AI features are genuinely best-in-class — multi-file edits, codebase-aware chat, and inline completions that feel almost telepathic.
 
-### Zed
+**The catch:** It's Electron-based, so it's heavier than native alternatives. The $20/month pro tier is needed for serious AI usage. And you're locked into their AI provider choices.
 
-Zed is a next-generation code editor built from scratch in Rust for maximum performance. It features real-time collaboration, integrated AI assistance, Tree-sitter for syntax highlighting, and GPU-accelerated rendering. From the team behind Atom and Electron.
+## Zed: The Performance Play
 
-[Website](https://zed.dev) | [GitHub](https://github.com/zed-industries/zed)
+[Zed](/tools/zed) is built from scratch in Rust by the team that created Atom. It's blazingly fast — large files open instantly, search across massive codebases feels immediate, and the UI never stutters.
 
-### Neovim
+**Best for:** Developers who value raw speed and clean design. The built-in multiplayer features are genuinely useful for pair programming. AI features are arriving but aren't the primary selling point yet.
 
-Neovim is a modern refactor of Vim with built-in LSP client, Tree-sitter integration, Lua scripting, and an async plugin architecture. It is the foundation for a massive ecosystem of plugins and distributions (LazyVim, AstroNvim, NvChad) that create full IDE experiences.
+**The catch:** The extension ecosystem is still young compared to VS Code or Neovim. If you depend on niche language servers or specialized extensions, check availability first.
 
-[Website](https://neovim.io) | [GitHub](https://github.com/neovim/neovim)
+## Neovim: The Extensibility King
 
+[Neovim](/tools/neovim) is for developers who want total control. With Lua-based configuration, the plugin ecosystem covers everything from AI completion (via [Continue](/tools/continue) or copilot.lua) to full IDE features through LSP.
+
+**Best for:** Developers who invest time in their tools and want an editor that works exactly how they think. Terminal-native means it works over SSH, in containers, on any machine. The efficiency ceiling is the highest of all three.
+
+**The catch:** The learning curve is real. Getting a productive Neovim setup takes days, not minutes. Distributions like LazyVim and AstroNvim help, but you'll still need to understand the fundamentals.
 
 ## Which Should You Choose?
 
-{/* TODO: Add editorial recommendation based on use cases */}
+**Choose Cursor if** you want AI to do the heavy lifting and you're coming from VS Code. The AI features are months ahead of competitors, and the familiar VS Code base means zero learning curve.
 
-The right choice depends on your specific needs. Check the detailed profiles on ToolShelf for more information:
-- [Cursor](/tools/cursor)
-- [Zed](/tools/zed)
-- [Neovim](/tools/neovim)
+**Choose Zed if** performance matters most and you want a modern, clean editor. It's the best pure editing experience of the three. Great for large codebases where editor speed directly affects productivity.
+
+**Choose Neovim if** you want maximum customization and don't mind the investment. Once configured, nothing else feels as fast or efficient. It's also the only option that works identically in a terminal session over SSH.
+
+The honest answer: many developers in 2026 use more than one. Neovim over SSH, Cursor for AI-heavy refactoring, Zed for daily coding. They're not mutually exclusive.
+
+---
+
+Explore all [AI Coding Tools](/category/ai-coding) on ToolShelf, or check the individual profiles: [Cursor](/tools/cursor), [Zed](/tools/zed), [Neovim](/tools/neovim).

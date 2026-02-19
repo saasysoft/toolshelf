@@ -1,107 +1,65 @@
 ---
-title: "Best Media and Design Tools in 2026"
-description: "Our top picks for the best media and design tools based on quality scores, maintenance activity, and community adoption."
+title: "Best Media & Design Tools for Developers in 2026"
+description: "Terminal emulators, developer utilities, AI media generation, and workflow tools -- the most diverse category in our directory, and the most interesting."
 date: "2026-02-19"
 category: "media-design"
-tags: ["media-design", "best-of", "2026", "developer-tools"]
-published: false
+tags: ["media", "design", "terminal", "developer-tools", "ai-generation"]
+type: "best-of"
+published: true
 ---
 
-Looking for the best media and design tools? We analyzed 15 tools in this category using ToolShelf's quality scoring system — factoring in maintenance activity, community adoption, documentation quality, and more.
+Media & Design is our most eclectic category. It spans terminal emulators, developer Swiss-army-knife utilities, AI media generation, and Git workflow tools. The connecting thread is that these tools shape how developers interact with their environment and create things. Here's what deserves your attention.
 
-Here are the top picks for 2026.
+## Terminal Emulators: Kitty vs WezTerm
 
-### 1. n8n (175.2k stars)
+Your terminal emulator is the application you stare at most. Picking the right one matters more than most developers admit.
 
-n8n is a fair-code workflow automation platform with 400+ integrations and a visual node-based editor. It supports complex branching logic, custom JavaScript/Python code nodes, webhooks, and can be self-hosted. Bridges the gap between no-code and full-code automation.
+[Kitty](/tools/kitty) is GPU-accelerated and fast, with features that other terminals are still catching up to. The Kitty graphics protocol lets you display images inline in the terminal -- useful for previewing plots, screenshots, and diagrams without leaving your workflow. It's extensible through "kittens" (small Python programs), supports ligatures, tabs, splits, and remote control via IPC. Configuration is file-based and deep.
 
-**Pricing:** freemium — [Website](https://n8n.io)
+[WezTerm](/tools/wezterm) takes a different approach: Lua-based configuration that makes your terminal programmable. It's cross-platform (truly -- Windows, macOS, Linux with consistent behavior), has built-in multiplexing that rivals tmux, supports image rendering, and the Lua config lets you do things like dynamic tab titles, custom key bindings based on context, and even programmatic theme switching. Written in Rust, so it's fast.
 
-### 2. lazygit (72.6k stars)
+**Pick Kitty** if you're on Linux or macOS and want the graphics protocol and kitten ecosystem. **Pick WezTerm** if you need cross-platform consistency or want Lua-scriptable configuration.
 
-lazygit provides a full-featured terminal user interface for Git. Stage files, resolve merge conflicts, cherry-pick commits, rebase interactively, and browse diffs all with keyboard shortcuts. Makes complex Git operations visual and approachable.
+## Developer Utilities: DevToys and Raycast
 
-**Pricing:** open-source — [Website](https://github.com/jesseduffield/lazygit)
+Every developer has a collection of "I need to quickly decode this Base64 / format this JSON / generate a UUID" moments. These tools make those moments frictionless.
 
-### 3. Kitty (31.3k stars)
+[DevToys](/tools/devtoys) bundles 30+ offline utilities into a single app: JSON formatter, JWT decoder, Base64 encoder/decoder, UUID generator, hash calculator, regex tester, color picker, image converter, and more. Everything works offline with a clean native interface. It's the developer equivalent of having a well-organized physical toolbox -- nothing fancy, just everything in the right place.
 
-Kitty is a GPU-accelerated terminal emulator that uses OpenGL for rendering. It supports image display (via its graphics protocol), ligatures, tabs, splits, remote control via IPC, and extensibility through kittens (small Python programs). Highly customizable and performant.
+[Raycast](/tools/raycast) is a launcher and productivity tool for macOS that goes well beyond Spotlight. The extension ecosystem includes developer tools (color pickers, UUID generators, API clients), system utilities, and integrations with GitHub, Jira, Linear, and dozens of other services. The clipboard history and snippet expansion alone are worth the install. If you're on macOS, Raycast replaces three or four standalone utilities.
 
-**Pricing:** open-source — [Website](https://sw.kovidgoyal.net/kitty/)
+## AI Media Generation
 
-### 4. DevToys (31.0k stars)
+Two tools stand out in the AI generation space for developers.
 
-DevToys bundles 30+ offline developer utilities into a single app: JSON formatter, JWT decoder, Base64 encoder, UUID generator, hash calculator, regex tester, color picker, and more. Works completely offline with a clean native interface.
+[FramePack](/tools/framepack) generates video from images and text prompts, running locally on consumer hardware. It's not a cloud API with a meter running -- it's a model you download and run. The quality is impressive for a self-hosted solution, and being able to iterate on video generation without per-request costs changes how you approach the tool. Useful for creating demo videos, social media content, or prototype visualizations.
 
-**Pricing:** open-source — [Website](https://devtoys.app)
+[Spark-TTS](/tools/spark-tts) handles text-to-speech synthesis with natural-sounding output. Running locally means no API latency and no per-character billing. For developers building voice interfaces, generating audio content, or adding narration to documentation or demos, having a capable local TTS engine removes a significant friction point.
 
-### 5. WezTerm (24.3k stars)
+Both tools represent the same trend: AI media capabilities moving from expensive cloud APIs to local execution. The quality gap between local and cloud is narrowing fast.
 
-WezTerm is a GPU-accelerated cross-platform terminal emulator and multiplexer written in Rust. It is configured entirely in Lua, supports ligatures, image rendering, multiplexing (like tmux built-in), and has excellent cross-platform consistency.
+## Git Workflow: lazygit
 
-**Pricing:** open-source — [Website](https://wezfurlong.org/wezterm/)
+[lazygit](/tools/lazygit) deserves mention in every category it touches. It provides a full terminal UI for Git: staging files, resolving merge conflicts, cherry-picking commits, interactive rebasing, and browsing diffs -- all with keyboard shortcuts. Complex Git operations that would normally require remembering arcane flags become visual and approachable.
 
-### 6. Feishin (7.1k stars)
+If you use Git (and you do), lazygit transforms the experience. The conflict resolution interface alone is worth the install. Pair it with [Kitty](/tools/kitty) or [WezTerm](/tools/wezterm) for the full terminal-first development setup.
 
-A modern self-hosted music player. Built with Typescript. Open-source project with 7.1k GitHub stars.
+## Utility Spotlight: dust
 
-**Pricing:** open-source — [Website](https://github.com/jeffvli/feishin)
+[dust](/tools/dust) is a more intuitive version of `du` -- it shows disk usage with a visual representation that makes it immediately obvious where your storage is going. Written in Rust, it's fast enough to scan large directories without waiting. A small tool, but the kind you use weekly once you have it.
 
-### 7. MediaManager (3.1k stars)
+## Building a Media & Design Toolkit
 
-A modern selfhosted media management system for your media library. Built with Python. Open-source project with 3.1k GitHub stars.
+The diversity of this category is actually its strength. A practical developer toolkit from these picks:
 
-**Pricing:** open-source — [Website](https://github.com/maxdorninger/MediaManager)
+- **Terminal:** [Kitty](/tools/kitty) or [WezTerm](/tools/wezterm) as your daily driver
+- **Utilities:** [DevToys](/tools/devtoys) for quick conversions, [Raycast](/tools/raycast) for macOS productivity
+- **Git:** [lazygit](/tools/lazygit) for terminal-based Git operations
+- **AI generation:** [FramePack](/tools/framepack) for video, [Spark-TTS](/tools/spark-tts) for audio
+- **Disk management:** [dust](/tools/dust) for understanding storage usage
 
-### 8. KrillinAI (9.4k stars)
-
-Video translation and dubbing tool powered by LLMs. The video translator offers 100 language translations and one-click full-process deployment. The video translation output is optimized for platforms like YouTube，TikTok.   AI视频翻译配音工具，100种语言双向翻译，一键部署全流程，可以生抖音，小红书，哔哩哔哩，视频号，TikTok，Youtube等形态的内容成适配
-
-**Pricing:** open-source — [Website](https://github.com/krillinai/KrillinAI)
-
-### 9. Manyfold (1.8k stars)
-
-A self-hosted digital asset manager for 3d print files. Built with Ruby. Open-source project with 1.8k GitHub stars.
-
-**Pricing:** open-source — [Website](https://github.com/manyfold3d/manyfold)
-
-### 10. Slink (1.4k stars)
-
-Self-hosted image sharing service. Built with Php. Open-source project with 1.4k GitHub stars.
-
-**Pricing:** open-source — [Website](https://github.com/andrii-kryvoviaz/slink)
-
-### 11. LongLive (1.1k stars)
-
-LongLive: Real-time Interactive Long Video Generation. Built with Python. Open-source project with 1.1k GitHub stars.
-
-**Pricing:** open-source — [Website](https://github.com/NVlabs/LongLive)
-
-### 12. Fluid Oss (1.1k stars)
-
-FluidVoice - macOS Offline Dictation app - Voice to Text fully Local :). Built with Swift. Open-source project with 1.1k GitHub stars.
-
-**Pricing:** open-source — [Website](https://github.com/altic-dev/Fluid-oss)
-
-### 13. Skyfall GS (0.7k stars)
-
-Skyfall-GS: Synthesizing Immersive 3D Urban Scenes from Satellite Imagery. Built with Python.
-
-**Pricing:** open-source — [Website](https://github.com/jayin92/Skyfall-GS)
-
-### 14. Mydia (0.7k stars)
-
-Your personal media companion, built with Phoenix LiveView. Built with Elixir.
-
-**Pricing:** open-source — [Website](https://github.com/getmydia/mydia)
-
-### 15. Bolna (0.6k stars)
-
-Conversational voice AI agents. Built with Python.
-
-**Pricing:** open-source — [Website](https://github.com/bolna-ai/bolna)
-
+None of these tools overlap. Each handles a distinct part of the developer workflow, and together they cover the full spectrum from writing code to creating media.
 
 ---
 
-Browse all tools in [Media & Design Tools](/category/media-design), or [search for something specific](/search).
+Explore all tools in our [Media & Design Tools category](/category/media-design), or [search for something specific](/search).
