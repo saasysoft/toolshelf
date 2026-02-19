@@ -105,6 +105,7 @@ description: "Our top picks for the best ${shortName.toLowerCase()} based on qua
 date: "${today()}"
 category: "${category.slug}"
 tags: ["${category.slug}", "best-of", "2026", "developer-tools"]
+type: "best-of"
 published: false
 ---
 
@@ -153,6 +154,7 @@ description: "A detailed comparison of ${toolGroup.map((t) => t.name).join(', ')
 date: "${today()}"
 category: "${toolGroup[0].category}"
 tags: ["comparison", "${toolGroup[0].category}", ${toolGroup.map((t) => `"${t.slug}"`).join(', ')}]
+type: "comparison"
 published: false
 ---
 
@@ -201,6 +203,7 @@ description: "A comprehensive look at the ${shortName.toLowerCase()} ecosystem â
 date: "${today()}"
 category: "${category.slug}"
 tags: ["${category.slug}", "landscape", "deep-dive", "2026"]
+type: "deep-dive"
 published: false
 ---
 

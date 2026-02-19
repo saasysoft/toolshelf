@@ -2,7 +2,7 @@ import fs from 'fs';
 import path from 'path';
 import matter from 'gray-matter';
 import readingTime from 'reading-time';
-import type { BlogPost, BlogPostMeta } from '@/types/blog';
+import type { BlogPost, BlogPostMeta, BlogPostType } from '@/types/blog';
 
 const CONTENT_DIR = path.join(process.cwd(), 'content', 'blog');
 
@@ -28,6 +28,8 @@ export function getAllPosts(): BlogPostMeta[] {
         tags: data.tags ?? [],
         readingTime: stats.text,
         published: data.published !== false,
+        type: (data.type as BlogPostType) ?? undefined,
+        image: data.image ?? undefined,
       } satisfies BlogPostMeta;
     })
     .filter((p) => p.published)
@@ -53,6 +55,8 @@ export function getPostBySlug(slug: string): BlogPost | null {
     tags: data.tags ?? [],
     readingTime: stats.text,
     published: data.published !== false,
+    type: (data.type as BlogPostType) ?? undefined,
+    image: data.image ?? undefined,
     content,
   };
 }
@@ -63,4 +67,18 @@ export function getAllSlugs(): string[] {
     .readdirSync(CONTENT_DIR)
     .filter((f) => f.endsWith('.mdx'))
     .map((f) => f.replace(/\.mdx$/, ''));
+}
+
+export function getPostsByCategory(category: string): BlogPostMeta[] {
+  return getAllPosts().filter((p) => p.category === category);
+}
+
+export function getAllCategories(): string[] {
+  const posts = getAllPosts();
+  return [...new Set(posts.map((p) => p.category).filter(Boolean))].sort();
+}
+
+export function getAllTags(): string[] {
+  const posts = getAllPosts();
+  return [...new Set(posts.flatMap((p) => p.tags))].sort();
 }

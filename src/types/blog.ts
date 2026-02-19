@@ -1,3 +1,5 @@
+export type BlogPostType = 'best-of' | 'comparison' | 'deep-dive' | 'guide' | 'roundup';
+
 export interface BlogPostMeta {
   title: string;
   slug: string;
@@ -7,6 +9,8 @@ export interface BlogPostMeta {
   tags: string[];
   readingTime: string;
   published: boolean;
+  type?: BlogPostType;
+  image?: string;
 }
 
 export interface BlogPost extends BlogPostMeta {

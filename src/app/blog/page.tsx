@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
-import Link from 'next/link';
-import { getAllPosts } from '@/lib/blog';
+import { Suspense } from 'react';
+import { getAllPosts, getAllCategories } from '@/lib/blog';
+import BlogCard from '@/components/BlogCard';
+import BlogFilterBar from '@/components/BlogFilterBar';
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -8,60 +10,55 @@ export const metadata: Metadata = {
     'Developer tool guides, comparisons, and roundups. Find the best tools for your stack.',
 };
 
-export default function BlogPage() {
-  const posts = getAllPosts();
+interface Props {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
+
+export default async function BlogPage({ searchParams }: Props) {
+  const sp = await searchParams;
+  const categoryFilter = typeof sp.category === 'string' ? sp.category : '';
+
+  const allPosts = getAllPosts();
+  const categories = getAllCategories();
+  const filteredPosts = categoryFilter
+    ? allPosts.filter((p) => p.category === categoryFilter)
+    : allPosts;
 
   return (
-    <div className="mx-auto max-w-4xl px-4 py-16 sm:px-6 lg:px-8">
-      <div className="mb-12">
-        <h1 className="text-3xl font-bold text-zinc-900 dark:text-zinc-100">
-          Blog
-        </h1>
-        <p className="mt-2 text-lg text-zinc-500 dark:text-zinc-400">
-          Guides, comparisons, and roundups to help you find the right developer
-          tools.
-        </p>
-      </div>
-
-      {posts.length === 0 ? (
-        <p className="text-zinc-500 dark:text-zinc-400">
-          Posts coming soon. Check back shortly!
-        </p>
-      ) : (
-        <div className="space-y-10">
-          {posts.map((post) => (
-            <article key={post.slug} className="group">
-              <Link href={`/blog/${post.slug}`} className="block">
-                <div className="flex items-center gap-3 text-sm text-zinc-500 dark:text-zinc-400">
-                  <time dateTime={post.date}>
-                    {new Date(post.date).toLocaleDateString('en-US', {
-                      year: 'numeric',
-                      month: 'long',
-                      day: 'numeric',
-                    })}
-                  </time>
-                  <span>&middot;</span>
-                  <span>{post.readingTime}</span>
-                  {post.category && (
-                    <>
-                      <span>&middot;</span>
-                      <span className="rounded-full bg-blue-50 px-2.5 py-0.5 text-xs font-medium text-blue-700 dark:bg-blue-900/30 dark:text-blue-300">
-                        {post.category}
-                      </span>
-                    </>
-                  )}
-                </div>
-                <h2 className="mt-2 text-xl font-semibold text-zinc-900 group-hover:text-blue-600 dark:text-zinc-100 dark:group-hover:text-blue-400">
-                  {post.title}
-                </h2>
-                <p className="mt-1 text-zinc-600 dark:text-zinc-400">
-                  {post.description}
-                </p>
-              </Link>
-            </article>
-          ))}
+    <div>
+      {/* Hero */}
+      <section className="border-b border-zinc-100 bg-gradient-to-b from-blue-50/50 to-white px-4 py-16 dark:border-zinc-800 dark:from-zinc-900 dark:to-zinc-950">
+        <div className="mx-auto max-w-5xl text-center">
+          <h1 className="text-3xl font-bold tracking-tight text-zinc-900 dark:text-zinc-100 sm:text-4xl">
+            Developer Tool Insights
+          </h1>
+          <p className="mt-3 text-lg text-zinc-600 dark:text-zinc-400">
+            Guides, comparisons, and deep dives to help you pick the right tools.{' '}
+            <span className="text-zinc-400 dark:text-zinc-500">
+              {allPosts.length} articles
+            </span>
+          </p>
         </div>
-      )}
+      </section>
+
+      {/* Filter + Grid */}
+      <div className="mx-auto max-w-5xl px-4 py-10 sm:px-6 lg:px-8">
+        <Suspense>
+          <BlogFilterBar categories={categories} postCount={allPosts.length} />
+        </Suspense>
+
+        {filteredPosts.length === 0 ? (
+          <p className="mt-12 text-center text-zinc-500 dark:text-zinc-400">
+            No posts in this category yet. Check back soon!
+          </p>
+        ) : (
+          <div className="mt-8 grid gap-6 sm:grid-cols-2">
+            {filteredPosts.map((post) => (
+              <BlogCard key={post.slug} post={post} />
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
