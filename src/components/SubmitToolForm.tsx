@@ -4,11 +4,16 @@ import { useState } from 'react';
 
 const CATEGORIES = [
   { value: '', label: 'Select a category...' },
-  { value: 'cli-tools', label: 'CLI Tools' },
-  { value: 'editor-extensions', label: 'Editor Extensions' },
+  { value: 'mcp-servers', label: 'MCP Servers & Claude Plugins' },
+  { value: 'cli-tools', label: 'CLI Tools & Terminal' },
+  { value: 'ai-coding', label: 'AI Coding Tools & Agents' },
+  { value: 'self-hosted', label: 'Self-Hosted Software' },
+  { value: 'developer-productivity', label: 'Developer Productivity' },
+  { value: 'data-tools', label: 'Data & Database Tools' },
   { value: 'devops-infra', label: 'DevOps & Infrastructure' },
-  { value: 'testing-quality', label: 'Testing & Quality' },
-  { value: 'ai-ml-tools', label: 'AI & ML Tools' },
+  { value: 'security', label: 'Security & Auth' },
+  { value: 'media-design', label: 'Media & Design Tools' },
+  { value: 'automation', label: 'Automation & Workflows' },
 ];
 
 export default function SubmitToolForm() {
@@ -20,6 +25,7 @@ export default function SubmitToolForm() {
     submitted_by: '',
     notes: '',
   });
+  const [honeypot, setHoneypot] = useState('');
   const [status, setStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
   const [message, setMessage] = useState('');
 
@@ -36,7 +42,7 @@ export default function SubmitToolForm() {
       const res = await fetch('/api/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({ ...formData, website: honeypot }),
       });
 
       const data = await res.json();
@@ -57,6 +63,20 @@ export default function SubmitToolForm() {
 
   return (
     <form onSubmit={handleSubmit} className="space-y-5">
+      {/* Honeypot — hidden from real users, bots auto-fill it */}
+      <div className="absolute opacity-0 -z-10" aria-hidden="true" tabIndex={-1}>
+        <label htmlFor="website">Website</label>
+        <input
+          type="text"
+          id="website"
+          name="website"
+          value={honeypot}
+          onChange={(e) => setHoneypot(e.target.value)}
+          tabIndex={-1}
+          autoComplete="off"
+        />
+      </div>
+
       {/* Tool Name */}
       <div>
         <label htmlFor="name" className="block text-sm font-medium text-zinc-700 dark:text-zinc-300">

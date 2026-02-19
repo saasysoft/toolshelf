@@ -1,8 +1,5 @@
-import { createClient } from '@supabase/supabase-js';
+import { supabase } from '@/lib/supabase';
 import { NextResponse } from 'next/server';
-
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseServiceKey = process.env.SUPABASE_SERVICE_KEY!;
 
 const rateLimitMap = new Map<string, number>();
 const RATE_LIMIT_MS = 60_000; // 1 minute between submissions per IP
@@ -22,6 +19,12 @@ export async function POST(request: Request) {
     const body = await request.json();
     const { name, website_url, github_url, category, submitted_by, notes } = body;
 
+    // Honeypot check — bots fill this hidden field, real users never see it
+    if (body.website) {
+      // Return fake success so bots think it worked
+      return NextResponse.json({ success: true, message: 'Tool submitted successfully! We\'ll review it soon.' });
+    }
+
     if (!name || typeof name !== 'string' || name.trim().length === 0) {
       return NextResponse.json({ error: 'Tool name is required.' }, { status: 400 });
     }
@@ -34,7 +37,36 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: 'Invalid GitHub URL.' }, { status: 400 });
     }
 
-    const supabase = createClient(supabaseUrl, supabaseServiceKey);
+    // Duplicate check — see if this GitHub URL already exists in tools table
+    if (github_url) {
+      const trimmedUrl = github_url.trim().replace(/\/+$/, ''); // normalize trailing slashes
+      const { data: existing } = await supabase
+        .from('tools')
+        .select('name, slug')
+        .eq('github_url', trimmedUrl)
+        .limit(1);
+
+      if (existing && existing.length > 0) {
+        return NextResponse.json(
+          { error: `This tool is already in our directory as "${existing[0].name}".` },
+          { status: 409 }
+        );
+      }
+
+      // Also check pending submissions
+      const { data: pendingSubmission } = await supabase
+        .from('submissions')
+        .select('name')
+        .eq('github_url', trimmedUrl)
+        .limit(1);
+
+      if (pendingSubmission && pendingSubmission.length > 0) {
+        return NextResponse.json(
+          { error: 'This tool has already been submitted and is pending review.' },
+          { status: 409 }
+        );
+      }
+    }
 
     const { error } = await supabase.from('submissions').insert({
       name: name.trim(),
