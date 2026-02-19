@@ -1,16 +1,43 @@
 export const dynamic = 'force-dynamic';
 
 import Link from 'next/link';
+import { Suspense } from 'react';
 import SearchBar from '@/components/SearchBar';
 import ToolGrid from '@/components/ToolGrid';
-import { getFeaturedTools, getRecentTools, getCategories } from '@/lib/queries';
+import FilterSidebar from '@/components/FilterSidebar';
+import { getFeaturedTools, getRecentTools, getCategories, getToolCount, getTools } from '@/lib/queries';
+import type { SortOption, MaintenanceStatus, PricingType } from '@/types/tool';
 
-export default async function HomePage() {
-  const [featured, recent, categories] = await Promise.all([
+interface Props {
+  searchParams: Promise<Record<string, string | string[] | undefined>>;
+}
+
+export default async function HomePage({ searchParams }: Props) {
+  const sp = await searchParams;
+
+  const toArray = (v: string | string[] | undefined): string[] => {
+    if (!v) return [];
+    return Array.isArray(v) ? v : [v];
+  };
+
+  const page = parseInt(sp.page as string) || 1;
+  const filters = {
+    platforms: toArray(sp.platform),
+    languages: toArray(sp.lang),
+    maintenance: toArray(sp.maintenance) as MaintenanceStatus[],
+    pricing: toArray(sp.pricing) as PricingType[],
+    sort: (sp.sort as SortOption) || 'quality_score',
+  };
+
+  const [featured, recent, categories, toolCount, { tools: browseTools, count: browseCount }] = await Promise.all([
     getFeaturedTools(),
     getRecentTools(),
     getCategories(),
+    getToolCount(),
+    getTools(filters, page),
   ]);
+
+  const totalPages = Math.ceil(browseCount / 24);
 
   return (
     <div>
@@ -23,8 +50,8 @@ export default async function HomePage() {
             <span className="text-blue-600">Skip the guesswork.</span>
           </h1>
           <p className="mt-4 text-lg text-zinc-600 dark:text-zinc-400">
-            A curated directory of developer power tools with quality scores,
-            maintenance status, and compatibility data &mdash; so you always know what you&apos;re installing.
+            {toolCount > 0 ? `${toolCount}+` : 'Hundreds of'} developer tools across {categories.length} categories
+            with quality scores, maintenance status, and compatibility data.
           </p>
           <div className="mx-auto mt-8 max-w-xl">
             <SearchBar size="large" />
@@ -40,6 +67,23 @@ export default async function HomePage() {
                 {term}
               </Link>
             ))}
+          </div>
+          {/* Stats bar */}
+          <div className="mt-6 flex items-center justify-center gap-6 text-sm text-zinc-500 dark:text-zinc-400">
+            <div className="flex items-center gap-1.5">
+              <span className="font-semibold text-zinc-900 dark:text-zinc-100">{toolCount.toLocaleString()}</span>
+              <span>tools</span>
+            </div>
+            <span className="text-zinc-300 dark:text-zinc-600">|</span>
+            <div className="flex items-center gap-1.5">
+              <span className="font-semibold text-zinc-900 dark:text-zinc-100">{categories.length}</span>
+              <span>categories</span>
+            </div>
+            <span className="text-zinc-300 dark:text-zinc-600">|</span>
+            <div className="flex items-center gap-1.5">
+              <span className="font-semibold text-zinc-900 dark:text-zinc-100">100%</span>
+              <span>free &amp; open</span>
+            </div>
           </div>
         </div>
       </section>
@@ -84,6 +128,43 @@ export default async function HomePage() {
           </div>
         )}
 
+        {/* Browse All Tools */}
+        <section className="mb-16" id="browse">
+          <div className="mb-6">
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Browse All Tools</h2>
+            <p className="mt-1 text-sm text-zinc-400">{browseCount} tools</p>
+          </div>
+          <div className="flex flex-col gap-8 lg:flex-row">
+            <Suspense fallback={null}>
+              <FilterSidebar />
+            </Suspense>
+            <div className="min-w-0 flex-1">
+              {browseTools.length > 0 ? (
+                <ToolGrid tools={browseTools} />
+              ) : (
+                <div className="rounded-xl border border-zinc-200 p-12 text-center dark:border-zinc-800">
+                  <p className="text-zinc-500">No tools match your filters.</p>
+                </div>
+              )}
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <div className="mt-8 flex items-center justify-center gap-2">
+                  {page > 1 && (
+                    <PaginationLink page={page - 1} label="Previous" />
+                  )}
+                  <span className="px-4 py-2 text-sm text-zinc-500">
+                    Page {page} of {totalPages}
+                  </span>
+                  {page < totalPages && (
+                    <PaginationLink page={page + 1} label="Next" />
+                  )}
+                </div>
+              )}
+            </div>
+          </div>
+        </section>
+
         {/* Value Prop */}
         <section className="rounded-2xl border border-zinc-200 bg-zinc-50 p-8 dark:border-zinc-800 dark:bg-zinc-900/50 lg:p-12">
           <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">Why ToolShelf?</h2>
@@ -111,5 +192,16 @@ export default async function HomePage() {
         </section>
       </div>
     </div>
+  );
+}
+
+function PaginationLink({ page, label }: { page: number; label: string }) {
+  return (
+    <a
+      href={`?page=${page}#browse`}
+      className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
+    >
+      {label}
+    </a>
   );
 }

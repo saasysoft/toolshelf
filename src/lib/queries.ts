@@ -47,6 +47,18 @@ export async function getTools(filters: ToolFilters = {}, page = 1): Promise<{ t
   }
 }
 
+export async function getToolCount(): Promise<number> {
+  try {
+    const { count, error } = await supabase
+      .from('tools')
+      .select('*', { count: 'exact', head: true });
+    if (error) return 0;
+    return count || 0;
+  } catch {
+    return 0;
+  }
+}
+
 export async function getToolBySlug(slug: string): Promise<Tool | null> {
   try {
     const { data, error } = await supabase
