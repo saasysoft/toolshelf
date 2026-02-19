@@ -29,6 +29,7 @@ export default function Footer() {
               <li><Link href="/search" className="text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">Search</Link></li>
               <li><Link href="/collections" className="text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">Collections</Link></li>
               <li><Link href="/submit" className="text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">Submit a Tool</Link></li>
+              <li><Link href="/blog" className="text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">Blog</Link></li>
             </ul>
           </div>
           <div>
