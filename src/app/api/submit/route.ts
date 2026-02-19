@@ -52,20 +52,6 @@ export async function POST(request: Request) {
           { status: 409 }
         );
       }
-
-      // Also check pending submissions
-      const { data: pendingSubmission } = await supabase
-        .from('submissions')
-        .select('name')
-        .eq('github_url', trimmedUrl)
-        .limit(1);
-
-      if (pendingSubmission && pendingSubmission.length > 0) {
-        return NextResponse.json(
-          { error: 'This tool has already been submitted and is pending review.' },
-          { status: 409 }
-        );
-      }
     }
 
     const { error } = await supabase.from('submissions').insert({
