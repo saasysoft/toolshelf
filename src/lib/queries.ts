@@ -129,16 +129,36 @@ export async function getCategoryBySlug(slug: string): Promise<Category | null> 
   }
 }
 
-export async function searchTools(query: string, page = 1): Promise<{ tools: Tool[]; count: number }> {
+export async function searchTools(query: string, page = 1, filters: ToolFilters = {}): Promise<{ tools: Tool[]; count: number }> {
   try {
     const tsQuery = query.trim().split(/\s+/).join(' & ');
     const from = (page - 1) * TOOLS_PER_PAGE;
 
-    const { data, error, count } = await supabase
+    let q = supabase
       .from('tools')
       .select('*', { count: 'exact' })
-      .textSearch('fts', tsQuery)
-      .range(from, from + TOOLS_PER_PAGE - 1);
+      .textSearch('fts', tsQuery);
+
+    if (filters.languages?.length) {
+      q = q.overlaps('languages', filters.languages);
+    }
+    if (filters.platforms?.length) {
+      q = q.overlaps('platforms', filters.platforms);
+    }
+    if (filters.maintenance?.length) {
+      q = q.in('maintenance', filters.maintenance);
+    }
+    if (filters.pricing?.length) {
+      q = q.in('pricing', filters.pricing);
+    }
+
+    const sort = filters.sort || 'quality_score';
+    const ascending = sort === 'name';
+    q = q.order(sort, { ascending });
+
+    q = q.range(from, from + TOOLS_PER_PAGE - 1);
+
+    const { data, error, count } = await q;
 
     if (error) return { tools: [], count: 0 };
     return { tools: (data as Tool[]) || [], count: count || 0 };

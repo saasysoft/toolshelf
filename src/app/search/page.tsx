@@ -2,9 +2,13 @@ export const dynamic = 'force-dynamic';
 
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import { Suspense } from 'react';
 import SearchBar from '@/components/SearchBar';
 import ToolGrid from '@/components/ToolGrid';
+import FilterSidebar from '@/components/FilterSidebar';
+import Pagination from '@/components/Pagination';
 import { searchTools } from '@/lib/queries';
+import type { SortOption, MaintenanceStatus, PricingType } from '@/types/tool';
 
 interface Props {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
@@ -26,11 +30,24 @@ export default async function SearchPage({ searchParams }: Props) {
   const q = typeof sp.q === 'string' ? sp.q : '';
   const page = parseInt(sp.page as string) || 1;
 
+  const toArray = (v: string | string[] | undefined): string[] => {
+    if (!v) return [];
+    return Array.isArray(v) ? v : [v];
+  };
+
+  const filters = {
+    platforms: toArray(sp.platform),
+    languages: toArray(sp.lang),
+    maintenance: toArray(sp.maintenance) as MaintenanceStatus[],
+    pricing: toArray(sp.pricing) as PricingType[],
+    sort: (sp.sort as SortOption) || 'quality_score',
+  };
+
   let tools: Awaited<ReturnType<typeof searchTools>>['tools'] = [];
   let count = 0;
 
   if (q) {
-    const result = await searchTools(q, page);
+    const result = await searchTools(q, page, filters);
     tools = result.tools;
     count = result.count;
   }
@@ -38,7 +55,7 @@ export default async function SearchPage({ searchParams }: Props) {
   const totalPages = Math.ceil(count / 24);
 
   return (
-    <div className="mx-auto max-w-5xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
       {/* Breadcrumb */}
       <nav className="mb-6 text-sm text-zinc-500">
         <Link href="/" className="hover:text-zinc-900 dark:hover:text-zinc-100">Home</Link>
@@ -58,41 +75,31 @@ export default async function SearchPage({ searchParams }: Props) {
         </p>
       )}
 
-      {tools.length > 0 ? (
-        <ToolGrid tools={tools} />
-      ) : q ? (
-        <div className="rounded-xl border border-zinc-200 p-12 text-center dark:border-zinc-800">
-          <p className="text-zinc-500">No tools found for &quot;{q}&quot;.</p>
-          <p className="mt-2 text-sm text-zinc-400">Try a different search term or browse by category.</p>
-        </div>
-      ) : (
-        <div className="rounded-xl border border-zinc-200 p-12 text-center dark:border-zinc-800">
-          <p className="text-zinc-500">Enter a search term to find developer tools.</p>
-        </div>
-      )}
+      <div className="flex flex-col gap-8 lg:flex-row">
+        {q && (
+          <Suspense fallback={null}>
+            <FilterSidebar />
+          </Suspense>
+        )}
+        <div className="min-w-0 flex-1">
+          {tools.length > 0 ? (
+            <ToolGrid tools={tools} />
+          ) : q ? (
+            <div className="rounded-xl border border-zinc-200 p-12 text-center dark:border-zinc-800">
+              <p className="text-zinc-500">No tools found for &quot;{q}&quot;.</p>
+              <p className="mt-2 text-sm text-zinc-400">Try a different search term or browse by category.</p>
+            </div>
+          ) : (
+            <div className="rounded-xl border border-zinc-200 p-12 text-center dark:border-zinc-800">
+              <p className="text-zinc-500">Enter a search term to find developer tools.</p>
+            </div>
+          )}
 
-      {/* Pagination */}
-      {totalPages > 1 && (
-        <div className="mt-8 flex items-center justify-center gap-2">
-          {page > 1 && (
-            <a
-              href={`?q=${encodeURIComponent(q)}&page=${page - 1}`}
-              className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300"
-            >
-              Previous
-            </a>
-          )}
-          <span className="px-4 py-2 text-sm text-zinc-500">Page {page} of {totalPages}</span>
-          {page < totalPages && (
-            <a
-              href={`?q=${encodeURIComponent(q)}&page=${page + 1}`}
-              className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700 hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300"
-            >
-              Next
-            </a>
-          )}
+          <Suspense fallback={null}>
+            <Pagination page={page} totalPages={totalPages} />
+          </Suspense>
         </div>
-      )}
+      </div>
     </div>
   );
 }

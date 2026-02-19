@@ -5,6 +5,7 @@ import { Suspense } from 'react';
 import SearchBar from '@/components/SearchBar';
 import ToolGrid from '@/components/ToolGrid';
 import FilterSidebar from '@/components/FilterSidebar';
+import Pagination from '@/components/Pagination';
 import { getFeaturedTools, getRecentTools, getCategories, getToolCount, getTools } from '@/lib/queries';
 import type { SortOption, MaintenanceStatus, PricingType } from '@/types/tool';
 
@@ -147,20 +148,9 @@ export default async function HomePage({ searchParams }: Props) {
                 </div>
               )}
 
-              {/* Pagination */}
-              {totalPages > 1 && (
-                <div className="mt-8 flex items-center justify-center gap-2">
-                  {page > 1 && (
-                    <PaginationLink page={page - 1} label="Previous" />
-                  )}
-                  <span className="px-4 py-2 text-sm text-zinc-500">
-                    Page {page} of {totalPages}
-                  </span>
-                  {page < totalPages && (
-                    <PaginationLink page={page + 1} label="Next" />
-                  )}
-                </div>
-              )}
+              <Suspense fallback={null}>
+                <Pagination page={page} totalPages={totalPages} anchor="browse" />
+              </Suspense>
             </div>
           </div>
         </section>
@@ -192,16 +182,5 @@ export default async function HomePage({ searchParams }: Props) {
         </section>
       </div>
     </div>
-  );
-}
-
-function PaginationLink({ page, label }: { page: number; label: string }) {
-  return (
-    <a
-      href={`?page=${page}#browse`}
-      className="rounded-lg border border-zinc-200 px-4 py-2 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-700 dark:text-zinc-300 dark:hover:bg-zinc-800"
-    >
-      {label}
-    </a>
   );
 }
