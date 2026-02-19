@@ -6,6 +6,9 @@ export default function Header() {
     <header className="sticky top-0 z-50 border-b border-zinc-200 bg-white/80 backdrop-blur-lg dark:border-zinc-800 dark:bg-zinc-950/80">
       <div className="mx-auto flex h-16 max-w-7xl items-center gap-4 px-4 sm:px-6 lg:px-8">
         <Link href="/" className="flex shrink-0 items-center gap-2">
+          <div className="flex h-6 w-6 items-center justify-center rounded-md bg-gradient-to-br from-blue-500 to-indigo-500 text-xs font-bold text-white">
+            T
+          </div>
           <span className="text-xl font-bold text-zinc-900 dark:text-zinc-100">
             Tool<span className="text-blue-600">Shelf</span>
           </span>
