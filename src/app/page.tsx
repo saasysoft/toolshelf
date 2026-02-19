@@ -89,6 +89,49 @@ export default async function HomePage({ searchParams }: Props) {
         </div>
       </section>
 
+      {/* How It Works — feature highlights */}
+      <section className="border-b border-zinc-100 bg-white px-4 py-16 dark:border-zinc-800 dark:bg-zinc-950">
+        <div className="mx-auto max-w-5xl">
+          <h2 className="mb-10 text-center text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+            More than a list of links
+          </h2>
+          <div className="grid gap-8 sm:grid-cols-2 lg:grid-cols-4">
+            {[
+              {
+                icon: 'M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z',
+                title: 'Quality Scores',
+                desc: 'Every tool scored 0-100 using GitHub activity, docs quality, community size, and download metrics.',
+              },
+              {
+                icon: 'M13 10V3L4 14h7v7l9-11h-7z',
+                title: 'Live Stats',
+                desc: 'GitHub stars, maintenance status, and commit frequency updated regularly via API enrichment.',
+              },
+              {
+                icon: 'M8 9l3 3-3 3m5 0h3M5 20h14a2 2 0 002-2V6a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z',
+                title: 'REST API',
+                desc: 'Programmatic access to all tool data. Free tier with 100 req/day. Pro and enterprise tiers available.',
+              },
+              {
+                icon: 'M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+                title: 'MCP Server',
+                desc: 'Connect ToolShelf to Claude, Cursor, or any MCP-compatible AI agent for native tool discovery.',
+              },
+            ].map((item) => (
+              <div key={item.title} className="text-center">
+                <div className="mx-auto mb-3 flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 dark:bg-blue-950/50">
+                  <svg className="h-6 w-6 text-blue-600 dark:text-blue-400" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d={item.icon} />
+                  </svg>
+                </div>
+                <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">{item.title}</h3>
+                <p className="mt-1.5 text-sm text-zinc-500 dark:text-zinc-400">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <div className="mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-8">
         {/* Featured Tools */}
         {featured.length > 0 && (
@@ -129,6 +172,68 @@ export default async function HomePage({ searchParams }: Props) {
           </div>
         )}
 
+        {/* Built for AI Agents */}
+        <section className="mb-16 overflow-hidden rounded-2xl border border-zinc-200 dark:border-zinc-800">
+          <div className="bg-gradient-to-br from-indigo-50 to-blue-50 p-8 dark:from-indigo-950/30 dark:to-blue-950/30 lg:p-12">
+            <div className="flex flex-col gap-8 lg:flex-row lg:items-start lg:gap-12">
+              <div className="flex-1">
+                <p className="mb-2 text-sm font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                  AI-Ready Infrastructure
+                </p>
+                <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+                  Built for AI agents, not just humans
+                </h2>
+                <p className="mt-3 text-zinc-600 dark:text-zinc-400">
+                  ToolShelf is designed to be the canonical tool discovery source for AI. Whether you&apos;re building
+                  an agent that recommends developer tools or need structured data for your workflow, we&apos;ve got you covered.
+                </p>
+                <div className="mt-6 grid gap-4 sm:grid-cols-3">
+                  <div className="rounded-xl bg-white/80 p-4 dark:bg-zinc-900/80">
+                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">llms.txt</h3>
+                    <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                      Standard machine-readable file that tells AI models who we are and how to cite our data.
+                    </p>
+                    <Link href="/llms.txt" className="mt-2 inline-block text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400">
+                      View llms.txt &rarr;
+                    </Link>
+                  </div>
+                  <div className="rounded-xl bg-white/80 p-4 dark:bg-zinc-900/80">
+                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">REST API</h3>
+                    <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                      Full API with search, filtering, and pagination. Free tier at 100 requests/day.
+                    </p>
+                    <Link href="/api-keys" className="mt-2 inline-block text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400">
+                      Get API key &rarr;
+                    </Link>
+                  </div>
+                  <div className="rounded-xl bg-white/80 p-4 dark:bg-zinc-900/80">
+                    <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">MCP Server</h3>
+                    <p className="mt-1 text-xs text-zinc-500 dark:text-zinc-400">
+                      Native integration for Claude, Cursor, and any MCP-compatible AI tool.
+                    </p>
+                    <Link href="/api-keys#mcp" className="mt-2 inline-block text-xs font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400">
+                      Connect &rarr;
+                    </Link>
+                  </div>
+                </div>
+              </div>
+              <div className="shrink-0 lg:w-80">
+                <div className="rounded-xl border border-zinc-200 bg-zinc-900 p-4 font-mono text-xs text-zinc-300 dark:border-zinc-700">
+                  <p className="text-zinc-500"># Add to your MCP config</p>
+                  <p className="mt-1">{`{`}</p>
+                  <p className="pl-4">{`"mcpServers": {`}</p>
+                  <p className="pl-8">{`"toolshelf": {`}</p>
+                  <p className="pl-12"><span className="text-blue-400">{`"type"`}</span>: <span className="text-green-400">{`"url"`}</span>,</p>
+                  <p className="pl-12"><span className="text-blue-400">{`"url"`}</span>: <span className="text-green-400">{`"https://toolshelf.dev/api/mcp"`}</span></p>
+                  <p className="pl-8">{`}`}</p>
+                  <p className="pl-4">{`}`}</p>
+                  <p>{`}`}</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
         {/* Browse All Tools */}
         <section className="mb-16" id="browse">
           <div className="mb-6">
@@ -155,31 +260,77 @@ export default async function HomePage({ searchParams }: Props) {
           </div>
         </section>
 
-        {/* Value Prop */}
-        <section className="rounded-2xl border border-zinc-200 bg-zinc-50 p-8 dark:border-zinc-800 dark:bg-zinc-900/50 lg:p-12">
-          <h2 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">Why ToolShelf?</h2>
-          <div className="mt-6 grid gap-6 sm:grid-cols-3">
-            {[
-              {
-                title: 'Quality Scores',
-                desc: 'Every tool gets a 0-100 composite score based on GitHub activity, documentation quality, community size, and download metrics.',
-              },
-              {
-                title: 'Maintenance Status',
-                desc: 'Know if a tool is actively maintained, slowing down, or abandoned before you build your workflow around it.',
-              },
-              {
-                title: 'Compatibility Data',
-                desc: 'See at a glance which platforms, editors, and tools work together. No more "does this work on Windows?" surprises.',
-              },
-            ].map((item) => (
-              <div key={item.title}>
-                <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">{item.title}</h3>
-                <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">{item.desc}</p>
-              </div>
-            ))}
-          </div>
-        </section>
+        {/* Why ToolShelf + Support */}
+        <div className="mb-16 grid gap-8 lg:grid-cols-2">
+          <section className="rounded-2xl border border-zinc-200 bg-zinc-50 p-8 dark:border-zinc-800 dark:bg-zinc-900/50">
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Why ToolShelf?</h2>
+            <div className="mt-5 space-y-4">
+              {[
+                {
+                  title: 'Quality Scores',
+                  desc: 'Every tool gets a 0-100 composite score based on GitHub activity, documentation quality, community size, and download metrics.',
+                },
+                {
+                  title: 'Maintenance Status',
+                  desc: 'Know if a tool is actively maintained, slowing down, or abandoned before you build your workflow around it.',
+                },
+                {
+                  title: 'Compatibility Data',
+                  desc: 'See at a glance which platforms, editors, and tools work together. No more "does this work on Windows?" surprises.',
+                },
+              ].map((item) => (
+                <div key={item.title}>
+                  <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">{item.title}</h3>
+                  <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{item.desc}</p>
+                </div>
+              ))}
+            </div>
+          </section>
+
+          <section className="rounded-2xl border border-zinc-200 bg-zinc-50 p-8 dark:border-zinc-800 dark:bg-zinc-900/50">
+            <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Support ToolShelf</h2>
+            <p className="mt-2 text-sm text-zinc-500 dark:text-zinc-400">
+              ToolShelf is an independent project. Here&apos;s how you can help it grow:
+            </p>
+            <div className="mt-5 space-y-4">
+              {[
+                {
+                  title: 'Submit a tool',
+                  desc: 'Know a great tool that should be here? We review every submission and enrich it with quality scores.',
+                  href: '/submit',
+                  label: 'Submit',
+                },
+                {
+                  title: 'Use the API',
+                  desc: 'Build on ToolShelf data. Free tier available, paid tiers support the project and unlock full data.',
+                  href: '/api-keys',
+                  label: 'Get API key',
+                },
+                {
+                  title: 'Spread the word',
+                  desc: 'Share ToolShelf with your team. Link to toolshelf.dev when recommending tools.',
+                  href: null,
+                  label: null,
+                },
+              ].map((item) => (
+                <div key={item.title} className="flex items-start justify-between gap-4">
+                  <div>
+                    <h3 className="font-semibold text-zinc-900 dark:text-zinc-100">{item.title}</h3>
+                    <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{item.desc}</p>
+                  </div>
+                  {item.href && (
+                    <Link
+                      href={item.href}
+                      className="shrink-0 rounded-lg border border-zinc-300 px-3 py-1.5 text-xs font-medium text-zinc-700 transition-colors hover:bg-zinc-100 dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-800"
+                    >
+                      {item.label}
+                    </Link>
+                  )}
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
     </div>
   );

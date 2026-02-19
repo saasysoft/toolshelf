@@ -31,11 +31,19 @@ export default function Footer() {
               <li><Link href="/submit" className="text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">Submit a Tool</Link></li>
             </ul>
           </div>
-          <div className="col-span-2 md:col-span-2">
+          <div>
+            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Developers</h3>
+            <ul className="mt-3 space-y-2">
+              <li><Link href="/api-keys" className="text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">API Access</Link></li>
+              <li><Link href="/llms.txt" className="text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">llms.txt</Link></li>
+              <li><Link href="/api-keys#mcp" className="text-sm text-zinc-500 hover:text-zinc-900 dark:text-zinc-400 dark:hover:text-zinc-100">MCP Server</Link></li>
+            </ul>
+          </div>
+          <div>
             <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">About ToolShelf</h3>
             <p className="mt-3 text-sm text-zinc-500 dark:text-zinc-400">
               A curated directory of developer power tools with AI-enriched quality scores,
-              maintenance status, and compatibility data. No more guessing if a tool is actively maintained.
+              maintenance status, and compatibility data. Built for both humans and AI agents.
             </p>
           </div>
         </div>

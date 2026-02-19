@@ -32,6 +32,12 @@ export default function Header() {
             Collections
           </Link>
           <Link
+            href="/api-keys"
+            className="rounded-lg px-3 py-2 text-sm font-medium text-zinc-600 transition-colors hover:bg-zinc-100 hover:text-zinc-900 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-100"
+          >
+            API
+          </Link>
+          <Link
             href="/submit"
             className="rounded-lg bg-blue-600 px-3 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700"
           >
