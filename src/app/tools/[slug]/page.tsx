@@ -6,6 +6,7 @@ import QualityBadge from '@/components/QualityBadge';
 import MaintenanceBadge from '@/components/MaintenanceBadge';
 import PlatformBadges from '@/components/PlatformBadges';
 import ToolGrid from '@/components/ToolGrid';
+import BookmarkButton from '@/components/BookmarkButton';
 import { formatNumber, formatDate, getDifficultyColor, getInstallCommand } from '@/lib/utils';
 
 interface Props {
@@ -69,6 +70,7 @@ export default async function ToolPage({ params }: Props) {
             )}
           </div>
           <div className="flex flex-wrap items-center gap-2">
+            <BookmarkButton toolId={tool.id} />
             <QualityBadge score={tool.quality_score} />
             <MaintenanceBadge status={tool.maintenance} />
           </div>

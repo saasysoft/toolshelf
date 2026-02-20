@@ -3,14 +3,13 @@ import type { Tool } from '@/types/tool';
 import { formatNumber } from '@/lib/utils';
 import QualityBadge from './QualityBadge';
 import MaintenanceBadge from './MaintenanceBadge';
+import BookmarkButton from './BookmarkButton';
 
 export default function ToolCard({ tool }: { tool: Tool }) {
   return (
-    <Link
-      href={`/tools/${tool.slug}`}
-      className="group flex flex-col rounded-xl border border-zinc-200 bg-white p-5 transition-all hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700"
-    >
-      <div className="mb-3 flex items-start justify-between gap-2">
+    <div className="group relative flex flex-col rounded-xl border border-zinc-200 bg-white p-5 transition-all hover:border-zinc-300 hover:shadow-md dark:border-zinc-800 dark:bg-zinc-900 dark:hover:border-zinc-700">
+      <Link href={`/tools/${tool.slug}`} className="absolute inset-0 z-0" aria-label={tool.name} />
+      <div className="relative z-10 mb-3 flex items-start justify-between gap-2">
         <div className="min-w-0 flex-1">
           <h3 className="truncate text-base font-semibold text-zinc-900 group-hover:text-blue-600 dark:text-zinc-100 dark:group-hover:text-blue-400">
             {tool.name}
@@ -21,10 +20,13 @@ export default function ToolCard({ tool }: { tool: Tool }) {
             </p>
           )}
         </div>
-        <QualityBadge score={tool.quality_score} />
+        <div className="flex items-center gap-2">
+          <BookmarkButton toolId={tool.id} />
+          <QualityBadge score={tool.quality_score} />
+        </div>
       </div>
 
-      <div className="mt-auto flex flex-wrap items-center gap-2 pt-3 border-t border-zinc-100 dark:border-zinc-800">
+      <div className="relative z-10 mt-auto flex flex-wrap items-center gap-2 pt-3 border-t border-zinc-100 dark:border-zinc-800">
         <MaintenanceBadge status={tool.maintenance} />
 
         {tool.github_stars > 0 && (
@@ -52,6 +54,6 @@ export default function ToolCard({ tool }: { tool: Tool }) {
           </div>
         )}
       </div>
-    </Link>
+    </div>
   );
 }

@@ -3,6 +3,7 @@ import { Suspense } from 'react';
 import { getAllPosts, getAllCategories } from '@/lib/blog';
 import BlogCard from '@/components/BlogCard';
 import BlogFilterBar from '@/components/BlogFilterBar';
+import NewsletterForm from '@/components/NewsletterForm';
 
 export const metadata: Metadata = {
   title: 'Blog',
@@ -38,6 +39,17 @@ export default async function BlogPage({ searchParams }: Props) {
               {allPosts.length} articles
             </span>
           </p>
+        </div>
+      </section>
+
+      {/* Newsletter CTA */}
+      <section className="border-b border-zinc-100 bg-blue-50/50 px-4 py-8 dark:border-zinc-800 dark:bg-blue-950/20">
+        <div className="mx-auto max-w-md text-center">
+          <p className="mb-3 text-sm font-semibold text-blue-600 dark:text-blue-400">Newsletter</p>
+          <p className="mb-4 text-sm text-zinc-600 dark:text-zinc-400">
+            Get new tool roundups and deep dives delivered weekly.
+          </p>
+          <NewsletterForm />
         </div>
       </section>
 

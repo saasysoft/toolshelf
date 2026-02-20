@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import NewsletterForm from './NewsletterForm';
 
 export default function Footer() {
   return (
@@ -41,11 +42,11 @@ export default function Footer() {
             </ul>
           </div>
           <div>
-            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">About ToolShelf</h3>
-            <p className="mt-3 text-sm text-zinc-500 dark:text-zinc-400">
-              A curated directory of developer power tools with AI-enriched quality scores,
-              maintenance status, and compatibility data. Built for both humans and AI agents.
+            <h3 className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Stay in the loop</h3>
+            <p className="mt-3 mb-3 text-sm text-zinc-500 dark:text-zinc-400">
+              Get the best new developer tools delivered to your inbox. No spam, unsubscribe anytime.
             </p>
+            <NewsletterForm variant="compact" />
           </div>
         </div>
         <div className="mt-8 border-t border-zinc-200 pt-8 dark:border-zinc-800">

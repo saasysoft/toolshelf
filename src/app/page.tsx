@@ -6,6 +6,7 @@ import SearchBar from '@/components/SearchBar';
 import ToolGrid from '@/components/ToolGrid';
 import FilterSidebar from '@/components/FilterSidebar';
 import Pagination from '@/components/Pagination';
+import NewsletterForm from '@/components/NewsletterForm';
 import { getFeaturedTools, getRecentTools, getCategories, getToolCount, getTools } from '@/lib/queries';
 import type { SortOption, MaintenanceStatus, PricingType } from '@/types/tool';
 
@@ -257,6 +258,17 @@ export default async function HomePage({ searchParams }: Props) {
                 <Pagination page={page} totalPages={totalPages} anchor="browse" />
               </Suspense>
             </div>
+          </div>
+        </section>
+
+        {/* Newsletter CTA */}
+        <section className="mb-16 rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-8 text-center dark:border-blue-900 dark:from-blue-950/30 dark:to-indigo-950/30">
+          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Stay ahead of the curve</h2>
+          <p className="mx-auto mt-2 max-w-md text-sm text-zinc-600 dark:text-zinc-400">
+            Get weekly roundups of the best new developer tools, curated comparisons, and insights delivered to your inbox.
+          </p>
+          <div className="mx-auto mt-5 max-w-sm">
+            <NewsletterForm />
           </div>
         </section>
 
