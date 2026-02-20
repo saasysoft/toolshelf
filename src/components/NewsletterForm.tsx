@@ -1,6 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
+import { trackEvent } from '@/lib/analytics';
 
 function formatCount(count: number): string {
   if (count > 500) {
@@ -46,6 +47,7 @@ export default function NewsletterForm({ variant = 'default' }: { variant?: 'def
         setStatus('success');
         setMessage(data.message || 'Subscribed!');
         setEmail('');
+        trackEvent({ action: 'newsletter_subscribe', category: 'engagement' });
       } else {
         setStatus('error');
         setMessage(data.error || 'Something went wrong.');

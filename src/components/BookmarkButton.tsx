@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from './AuthProvider';
 import { isBookmarked, toggleBookmark } from '@/lib/auth-queries';
+import { trackEvent } from '@/lib/analytics';
 
 export default function BookmarkButton({ toolId }: { toolId: string }) {
   const { user } = useAuth();
@@ -23,6 +24,11 @@ export default function BookmarkButton({ toolId }: { toolId: string }) {
     const result = await toggleBookmark(user.id, toolId);
     setBookmarked(result);
     setLoading(false);
+    trackEvent({
+      action: result ? 'bookmark_add' : 'bookmark_remove',
+      category: 'engagement',
+      label: toolId,
+    });
   }
 
   return (
