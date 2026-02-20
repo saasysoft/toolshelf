@@ -86,8 +86,35 @@ export default async function BlogPostPage({ params }: Props) {
     .filter((p) => p.slug !== post.slug)
     .slice(0, 3);
 
+  const siteUrl = 'https://toolshelf.dev';
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: post.title,
+    description: post.description,
+    datePublished: post.date,
+    author: {
+      '@type': 'Organization',
+      name: 'ToolShelf',
+      url: siteUrl,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'ToolShelf',
+      url: siteUrl,
+    },
+    url: `${siteUrl}/blog/${post.slug}`,
+    mainEntityOfPage: `${siteUrl}/blog/${post.slug}`,
+    keywords: post.tags.join(', '),
+    articleSection: post.category,
+  };
+
   return (
     <div>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Hero header */}
       <section className="border-b border-zinc-100 bg-gradient-to-b from-blue-50/50 to-white px-4 py-12 dark:border-zinc-800 dark:from-zinc-900 dark:to-zinc-950">
         <div className="mx-auto max-w-3xl">
