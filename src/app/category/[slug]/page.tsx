@@ -2,7 +2,8 @@ import { notFound } from 'next/navigation';
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { Suspense } from 'react';
-import { getCategoryBySlug, getTools } from '@/lib/queries';
+import { getCategoryBySlug, getTools, getDimensionsForCategory } from '@/lib/queries';
+import { getDimensionMeta } from '@/lib/landing-pages';
 import ToolGrid from '@/components/ToolGrid';
 import FilterSidebar from '@/components/FilterSidebar';
 import Pagination from '@/components/Pagination';
@@ -45,7 +46,10 @@ export default async function CategoryPage({ params, searchParams }: Props) {
     sort: (sp.sort as SortOption) || 'quality_score',
   };
 
-  const { tools, count } = await getTools(filters, page);
+  const [{ tools, count }, dimensions] = await Promise.all([
+    getTools(filters, page),
+    getDimensionsForCategory(slug),
+  ]);
   const totalPages = Math.ceil(count / 24);
 
   return (
@@ -68,6 +72,30 @@ export default async function CategoryPage({ params, searchParams }: Props) {
         )}
         <p className="mt-1 text-sm text-zinc-400">{count} tools</p>
       </div>
+
+      {/* Best Tools For... */}
+      {dimensions.length > 0 && (
+        <div className="mb-8">
+          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+            Best {category.name} Tools For
+          </h2>
+          <div className="flex flex-wrap gap-2">
+            {dimensions.slice(0, 16).map((dim) => {
+              const meta = getDimensionMeta(dim.slug);
+              return (
+                <Link
+                  key={dim.slug}
+                  href={`/best/${slug}/${dim.slug}`}
+                  className="rounded-full border border-zinc-200 px-3 py-1.5 text-sm text-zinc-600 transition-colors hover:border-blue-300 hover:text-blue-600 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-blue-600 dark:hover:text-blue-400"
+                >
+                  {meta.title}
+                  <span className="ml-1.5 text-xs text-zinc-400 dark:text-zinc-500">{dim.count}</span>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      )}
 
       {/* Content */}
       <div className="flex flex-col gap-8 lg:flex-row">

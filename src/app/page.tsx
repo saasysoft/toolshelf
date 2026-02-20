@@ -7,7 +7,8 @@ import ToolGrid from '@/components/ToolGrid';
 import FilterSidebar from '@/components/FilterSidebar';
 import Pagination from '@/components/Pagination';
 import NewsletterForm from '@/components/NewsletterForm';
-import { getFeaturedTools, getRecentTools, getCategories, getToolCount, getTools } from '@/lib/queries';
+import { getFeaturedTools, getRecentTools, getCategories, getToolCount, getTools, getDistinctDimensions } from '@/lib/queries';
+import { getDimensionMeta } from '@/lib/landing-pages';
 import type { SortOption, MaintenanceStatus, PricingType } from '@/types/tool';
 
 interface Props {
@@ -31,12 +32,13 @@ export default async function HomePage({ searchParams }: Props) {
     sort: (sp.sort as SortOption) || 'quality_score',
   };
 
-  const [featured, recent, categories, toolCount, { tools: browseTools, count: browseCount }] = await Promise.all([
+  const [featured, recent, categories, toolCount, { tools: browseTools, count: browseCount }, dimensions] = await Promise.all([
     getFeaturedTools(),
     getRecentTools(),
     getCategories(),
     getToolCount(),
     getTools(filters, page),
+    getDistinctDimensions(3),
   ]);
 
   const totalPages = Math.ceil(browseCount / 24);
@@ -224,6 +226,28 @@ export default async function HomePage({ searchParams }: Props) {
             ))}
           </div>
         </section>
+
+        {/* Best Tools For... */}
+        {dimensions.length > 0 && (
+          <section className="mb-16">
+            <h2 className="mb-4 text-xl font-bold text-zinc-900 dark:text-zinc-100">Best Developer Tools For...</h2>
+            <div className="flex flex-wrap gap-2">
+              {dimensions.slice(0, 24).map((dim) => {
+                const meta = getDimensionMeta(dim.slug);
+                return (
+                  <Link
+                    key={dim.slug}
+                    href={`/best/${dim.slug}`}
+                    className="rounded-full border border-zinc-200 px-3.5 py-1.5 text-sm text-zinc-600 transition-colors hover:border-blue-300 hover:text-blue-600 dark:border-zinc-700 dark:text-zinc-400 dark:hover:border-blue-600 dark:hover:text-blue-400"
+                  >
+                    {meta.title}
+                    <span className="ml-1.5 text-xs text-zinc-400 dark:text-zinc-500">{dim.count}</span>
+                  </Link>
+                );
+              })}
+            </div>
+          </section>
+        )}
 
         {/* Recent Additions */}
         {recent.length > 0 && (

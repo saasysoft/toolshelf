@@ -331,6 +331,35 @@ export async function getToolsByCategoryAndDimension(category: string, dimension
   }
 }
 
+export async function getDimensionsForCategory(categorySlug: string, minCount = 3): Promise<{ slug: string; count: number }[]> {
+  try {
+    const { data, error } = await supabase
+      .from('tools')
+      .select('languages, works_with')
+      .eq('category', categorySlug);
+    if (error || !data) return [];
+
+    const counts = new Map<string, number>();
+    for (const row of data) {
+      const values = [
+        ...(row.languages || []),
+        ...(row.works_with || []),
+      ];
+      for (const v of values) {
+        const s = slugify(v);
+        if (s && s !== 'unknown') counts.set(s, (counts.get(s) || 0) + 1);
+      }
+    }
+
+    return Array.from(counts.entries())
+      .filter(([, count]) => count >= minCount)
+      .map(([slug, count]) => ({ slug, count }))
+      .sort((a, b) => b.count - a.count);
+  } catch {
+    return [];
+  }
+}
+
 export async function getAllCollectionSlugs(): Promise<string[]> {
   try {
     const { data, error } = await supabase
