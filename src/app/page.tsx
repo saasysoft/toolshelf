@@ -58,6 +58,20 @@ export default async function HomePage({ searchParams }: Props) {
           <div className="mx-auto mt-8 max-w-xl">
             <SearchBar size="large" />
           </div>
+          <div className="mt-5 flex items-center justify-center gap-3">
+            <a
+              href="#browse"
+              className="rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-medium text-white transition-colors hover:bg-blue-700"
+            >
+              Browse All Tools
+            </a>
+            <Link
+              href="/api-keys"
+              className="rounded-lg border border-zinc-300 px-5 py-2.5 text-sm font-medium text-zinc-700 transition-colors hover:bg-zinc-50 dark:border-zinc-600 dark:text-zinc-300 dark:hover:bg-zinc-800"
+            >
+              Get Free API Key
+            </Link>
+          </div>
           <div className="mt-4 flex flex-wrap items-center justify-center gap-2 text-sm text-zinc-400">
             <span>Popular:</span>
             {['ripgrep', 'Claude Code', 'Supabase', 'lazygit', 'n8n'].map((term) => (
@@ -87,6 +101,51 @@ export default async function HomePage({ searchParams }: Props) {
               <span>free &amp; open</span>
             </div>
           </div>
+        </div>
+      </section>
+
+      {/* Social Proof Bar */}
+      <section className="border-b border-zinc-100 bg-white px-4 py-6 dark:border-zinc-800 dark:bg-zinc-950">
+        <div className="mx-auto max-w-3xl text-center">
+          <p className="mb-3 text-xs font-medium uppercase tracking-wider text-zinc-400 dark:text-zinc-500">
+            Trusted by developers at companies building with our API
+          </p>
+          <div className="flex items-center justify-center gap-6 text-sm">
+            <div className="flex items-center gap-1.5">
+              <span className="font-semibold text-zinc-900 dark:text-zinc-100">{toolCount.toLocaleString()}+</span>
+              <span className="text-zinc-500 dark:text-zinc-400">Tools Indexed</span>
+            </div>
+            <span className="text-zinc-300 dark:text-zinc-600">|</span>
+            <div className="flex items-center gap-1.5">
+              <span className="font-semibold text-zinc-900 dark:text-zinc-100">{categories.length}</span>
+              <span className="text-zinc-500 dark:text-zinc-400">Categories</span>
+            </div>
+            <span className="text-zinc-300 dark:text-zinc-600">|</span>
+            <div className="flex items-center gap-1.5">
+              <span className="font-semibold text-zinc-900 dark:text-zinc-100">Open Source</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Problem / Pain Points */}
+      <section className="border-b border-zinc-100 bg-zinc-50 px-4 py-14 dark:border-zinc-800 dark:bg-zinc-900/50">
+        <div className="mx-auto max-w-3xl text-center">
+          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Sound familiar?</h2>
+          <div className="mt-8 grid gap-6 sm:grid-cols-3">
+            {[
+              'You find a promising tool on GitHub\u2026 6 months later it\u2019s abandoned.',
+              'README says \u201Cworks on all platforms\u201D\u2026 except yours.',
+              'Awesome lists have 500 links\u2026 but no way to tell which are actually good.',
+            ].map((pain) => (
+              <p key={pain} className="text-sm leading-relaxed text-zinc-600 dark:text-zinc-400">
+                &ldquo;{pain}&rdquo;
+              </p>
+            ))}
+          </div>
+          <p className="mt-8 text-sm font-semibold text-blue-600 dark:text-blue-400">
+            ToolShelf solves this.
+          </p>
         </div>
       </section>
 
@@ -232,6 +291,37 @@ export default async function HomePage({ searchParams }: Props) {
                 </div>
               </div>
             </div>
+            {/* API Pricing Strip */}
+            <div className="mt-8 border-t border-zinc-200/60 pt-8 dark:border-zinc-700/60">
+              <h3 className="mb-4 text-center text-sm font-semibold uppercase tracking-wider text-indigo-600 dark:text-indigo-400">
+                API Pricing
+              </h3>
+              <div className="grid gap-4 sm:grid-cols-3">
+                <div className="rounded-xl bg-white/80 p-5 text-center dark:bg-zinc-900/80">
+                  <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Free</p>
+                  <p className="mt-1 text-2xl font-bold text-zinc-900 dark:text-zinc-100">$0</p>
+                  <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">100 requests/day</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">Basic fields</p>
+                </div>
+                <div className="rounded-xl bg-white/80 p-5 text-center ring-2 ring-blue-500/20 dark:bg-zinc-900/80">
+                  <p className="text-sm font-semibold text-blue-600 dark:text-blue-400">Pro</p>
+                  <p className="mt-1 text-2xl font-bold text-zinc-900 dark:text-zinc-100">$19<span className="text-sm font-normal text-zinc-500">/mo</span></p>
+                  <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">5,000 requests/day</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">All fields</p>
+                </div>
+                <div className="rounded-xl bg-white/80 p-5 text-center dark:bg-zinc-900/80">
+                  <p className="text-sm font-semibold text-zinc-900 dark:text-zinc-100">Enterprise</p>
+                  <p className="mt-1 text-2xl font-bold text-zinc-900 dark:text-zinc-100">Custom</p>
+                  <p className="mt-2 text-xs text-zinc-500 dark:text-zinc-400">Unlimited requests</p>
+                  <p className="text-xs text-zinc-500 dark:text-zinc-400">Bulk export</p>
+                </div>
+              </div>
+              <div className="mt-4 text-center">
+                <Link href="/api-keys" className="text-sm font-medium text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300">
+                  Compare plans &rarr;
+                </Link>
+              </div>
+            </div>
           </div>
         </section>
 
@@ -261,11 +351,54 @@ export default async function HomePage({ searchParams }: Props) {
           </div>
         </section>
 
+        {/* FAQ */}
+        <section className="mb-16">
+          <h2 className="mb-6 text-xl font-bold text-zinc-900 dark:text-zinc-100">Frequently Asked Questions</h2>
+          <div className="divide-y divide-zinc-200 rounded-2xl border border-zinc-200 dark:divide-zinc-800 dark:border-zinc-800">
+            {[
+              {
+                q: 'How is ToolShelf different from Awesome lists?',
+                a: 'Awesome lists are great starting points, but they\'re static links with no quality signals. ToolShelf enriches every tool with a quality score, maintenance status, compatibility data, and live GitHub stats so you can make informed decisions.',
+              },
+              {
+                q: 'How are quality scores calculated?',
+                a: 'Each tool gets a 0\u2013100 composite score based on GitHub activity (stars, commit frequency, issue responsiveness), documentation quality, community size, and download metrics. Scores are updated regularly via our enrichment pipeline.',
+              },
+              {
+                q: 'How often is data updated?',
+                a: 'Tool metadata is re-enriched on a regular schedule via the GitHub and npm/PyPI APIs. New tools are reviewed and added on an ongoing basis.',
+              },
+              {
+                q: 'Is the API really free?',
+                a: 'Yes. The free tier gives you 100 requests per day with access to basic fields. Pro ($19/mo) and Enterprise tiers are available if you need higher limits or full data export.',
+              },
+              {
+                q: 'Who curates the tools?',
+                a: 'ToolShelf is an independent project. Tools are submitted by the community and reviewed before being added. Quality scores are calculated algorithmically, not editorially.',
+              },
+              {
+                q: 'Can I submit my own tool?',
+                a: 'Absolutely. Use the Submit page to suggest a tool. We review every submission, enrich it with quality data, and add it to the directory if it meets our inclusion criteria.',
+              },
+            ].map((item) => (
+              <details key={item.q} className="group">
+                <summary className="flex cursor-pointer items-center justify-between px-6 py-4 text-sm font-medium text-zinc-900 dark:text-zinc-100">
+                  {item.q}
+                  <svg className="h-5 w-5 shrink-0 text-zinc-400 transition-transform group-open:rotate-180" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 8.25l-7.5 7.5-7.5-7.5" />
+                  </svg>
+                </summary>
+                <p className="px-6 pb-4 text-sm text-zinc-500 dark:text-zinc-400">{item.a}</p>
+              </details>
+            ))}
+          </div>
+        </section>
+
         {/* Newsletter CTA */}
         <section className="mb-16 rounded-2xl border border-blue-200 bg-gradient-to-br from-blue-50 to-indigo-50 p-8 text-center dark:border-blue-900 dark:from-blue-950/30 dark:to-indigo-950/30">
-          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Stay ahead of the curve</h2>
+          <h2 className="text-xl font-bold text-zinc-900 dark:text-zinc-100">Get the Top 5 New Dev Tools Every Week</h2>
           <p className="mx-auto mt-2 max-w-md text-sm text-zinc-600 dark:text-zinc-400">
-            Get weekly roundups of the best new developer tools, curated comparisons, and insights delivered to your inbox.
+            Every Friday we send a short email with the best new developer tools we found that week, plus one deep-dive comparison. Free, no spam, unsubscribe anytime.
           </p>
           <div className="mx-auto mt-5 max-w-sm">
             <NewsletterForm />
@@ -296,6 +429,20 @@ export default async function HomePage({ searchParams }: Props) {
                   <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{item.desc}</p>
                 </div>
               ))}
+            </div>
+            <div className="mt-6 flex flex-wrap items-center gap-4 border-t border-zinc-200 pt-5 dark:border-zinc-700">
+              <a
+                href="https://github.com/saasysoft/toolshelf"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex items-center gap-1.5 text-sm font-medium text-zinc-700 transition-colors hover:text-blue-600 dark:text-zinc-300 dark:hover:text-blue-400"
+              >
+                <svg className="h-4 w-4" fill="currentColor" viewBox="0 0 24 24"><path d="M12 0C5.37 0 0 5.37 0 12c0 5.31 3.435 9.795 8.205 11.385.6.105.825-.255.825-.57 0-.285-.015-1.23-.015-2.235-3.015.555-3.795-.735-4.035-1.41-.135-.345-.72-1.41-1.23-1.695-.42-.225-1.02-.78-.015-.795.945-.015 1.62.87 1.845 1.23 1.08 1.815 2.805 1.305 3.495.99.105-.78.42-1.305.765-1.605-2.67-.3-5.46-1.335-5.46-5.925 0-1.305.465-2.385 1.23-3.225-.12-.3-.54-1.53.12-3.18 0 0 1.005-.315 3.3 1.23.96-.27 1.98-.405 3-.405s2.04.135 3 .405c2.295-1.56 3.3-1.23 3.3-1.23.66 1.65.24 2.88.12 3.18.765.84 1.23 1.905 1.23 3.225 0 4.605-2.805 5.625-5.475 5.925.435.375.81 1.095.81 2.22 0 1.605-.015 2.895-.015 3.3 0 .315.225.69.825.57A12.02 12.02 0 0024 12c0-6.63-5.37-12-12-12z" /></svg>
+                Open source on GitHub
+              </a>
+              <span className="text-xs text-zinc-400 dark:text-zinc-500">
+                {toolCount.toLocaleString()} tools across {categories.length} categories
+              </span>
             </div>
           </section>
 
@@ -344,6 +491,100 @@ export default async function HomePage({ searchParams }: Props) {
           </section>
         </div>
       </div>
+
+      {/* JSON-LD Schema Markup */}
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'WebSite',
+            name: 'ToolShelf',
+            url: 'https://toolshelf.dev',
+            description: 'Curated developer tools directory with quality scores, maintenance status, and compatibility data.',
+            potentialAction: {
+              '@type': 'SearchAction',
+              target: {
+                '@type': 'EntryPoint',
+                urlTemplate: 'https://toolshelf.dev/search?q={search_term_string}',
+              },
+              'query-input': 'required name=search_term_string',
+            },
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'Organization',
+            name: 'ToolShelf',
+            url: 'https://toolshelf.dev',
+            logo: 'https://toolshelf.dev/icon.svg',
+            sameAs: ['https://github.com/saasysoft/toolshelf'],
+          }),
+        }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{
+          __html: JSON.stringify({
+            '@context': 'https://schema.org',
+            '@type': 'FAQPage',
+            mainEntity: [
+              {
+                '@type': 'Question',
+                name: 'How is ToolShelf different from Awesome lists?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Awesome lists are great starting points, but they are static links with no quality signals. ToolShelf enriches every tool with a quality score, maintenance status, compatibility data, and live GitHub stats so you can make informed decisions.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'How are quality scores calculated?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Each tool gets a 0-100 composite score based on GitHub activity (stars, commit frequency, issue responsiveness), documentation quality, community size, and download metrics. Scores are updated regularly via our enrichment pipeline.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'How often is data updated?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Tool metadata is re-enriched on a regular schedule via the GitHub and npm/PyPI APIs. New tools are reviewed and added on an ongoing basis.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Is the API really free?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Yes. The free tier gives you 100 requests per day with access to basic fields. Pro ($19/mo) and Enterprise tiers are available if you need higher limits or full data export.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Who curates the tools?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'ToolShelf is an independent project. Tools are submitted by the community and reviewed before being added. Quality scores are calculated algorithmically, not editorially.',
+                },
+              },
+              {
+                '@type': 'Question',
+                name: 'Can I submit my own tool?',
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: 'Absolutely. Use the Submit page to suggest a tool. We review every submission, enrich it with quality data, and add it to the directory if it meets our inclusion criteria.',
+                },
+              },
+            ],
+          }),
+        }}
+      />
     </div>
   );
 }

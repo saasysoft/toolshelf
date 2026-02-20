@@ -82,7 +82,7 @@ export default function NewsletterForm({ variant = 'default' }: { variant?: 'def
           disabled={status === 'loading'}
           className="shrink-0 rounded-lg bg-blue-600 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-blue-700 disabled:opacity-50"
         >
-          {status === 'loading' ? 'Subscribing...' : 'Subscribe'}
+          {status === 'loading' ? 'Subscribing...' : 'Get Weekly Picks'}
         </button>
         {status === 'error' && (
           <p className="text-xs text-red-500 sm:col-span-2">{message}</p>
