@@ -1,5 +1,6 @@
 import type { MetadataRoute } from 'next';
 import { getAllToolSlugs, getAllCategorySlugs, getAllCollectionSlugs } from '@/lib/queries';
+import { getAllPosts } from '@/lib/blog';
 
 const BASE_URL = 'https://toolshelf.dev';
 
@@ -10,8 +11,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     getAllCollectionSlugs(),
   ]);
 
+  const blogPosts = getAllPosts();
+
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE_URL, changeFrequency: 'daily', priority: 1.0 },
+    { url: `${BASE_URL}/blog`, changeFrequency: 'weekly', priority: 0.8 },
     { url: `${BASE_URL}/search`, changeFrequency: 'weekly', priority: 0.7 },
     { url: `${BASE_URL}/submit`, changeFrequency: 'monthly', priority: 0.7 },
     { url: `${BASE_URL}/collections`, changeFrequency: 'weekly', priority: 0.7 },
@@ -41,11 +45,19 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.6,
   }));
 
+  const blogPages: MetadataRoute.Sitemap = blogPosts.map((post) => ({
+    url: `${BASE_URL}/blog/${post.slug}`,
+    lastModified: post.date,
+    changeFrequency: 'monthly',
+    priority: 0.7,
+  }));
+
   return [
     ...staticPages,
     ...categoryPages,
     ...collectionPages,
     ...toolPages,
     ...alternativePages,
+    ...blogPages,
   ];
 }
