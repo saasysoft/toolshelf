@@ -4,6 +4,7 @@ import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import AuthProvider from '@/components/AuthProvider';
 import ToastProvider from '@/components/Toast';
+import GoogleAnalytics from '@/components/GoogleAnalytics';
 import './globals.css';
 
 const geistSans = Geist({
@@ -40,6 +41,11 @@ export const metadata: Metadata = {
       'application/rss+xml': '/blog/feed.xml',
     },
   },
+  ...(process.env.NEXT_PUBLIC_GSC_VERIFICATION && {
+    verification: {
+      google: process.env.NEXT_PUBLIC_GSC_VERIFICATION,
+    },
+  }),
 };
 
 export default function RootLayout({
@@ -49,6 +55,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <GoogleAnalytics />
       <body
         className={`${geistSans.variable} ${geistMono.variable} flex min-h-screen flex-col bg-white font-sans antialiased dark:bg-zinc-950`}
       >
