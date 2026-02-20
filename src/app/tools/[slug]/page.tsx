@@ -278,19 +278,18 @@ export default async function ToolPage({ params }: Props) {
             '@type': 'SoftwareApplication',
             name: tool.name,
             description: tool.tagline || tool.description,
+            url: `https://toolshelf.dev/tools/${tool.slug}`,
             applicationCategory: 'DeveloperApplication',
-            operatingSystem: tool.platforms?.join(', '),
-            offers: {
-              '@type': 'Offer',
-              price: tool.pricing === 'free' || tool.pricing === 'open-source' ? '0' : undefined,
-              priceCurrency: 'USD',
-            },
-            aggregateRating: tool.quality_score > 0 ? {
-              '@type': 'AggregateRating',
-              ratingValue: (tool.quality_score / 20).toFixed(1),
-              bestRating: '5',
-              worstRating: '1',
-            } : undefined,
+            ...(tool.platforms?.length && { operatingSystem: tool.platforms.join(', ') }),
+            ...(tool.last_release && { softwareVersion: tool.last_release }),
+            ...(tool.license && { license: tool.license }),
+            ...((tool.pricing === 'free' || tool.pricing === 'open-source') && {
+              offers: {
+                '@type': 'Offer',
+                price: '0',
+                priceCurrency: 'USD',
+              },
+            }),
           }),
         }}
       />
