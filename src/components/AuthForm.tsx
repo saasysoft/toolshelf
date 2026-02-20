@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { createSupabaseBrowser } from '@/lib/supabase-browser';
+import { useToast } from '@/components/Toast';
 
 interface AuthFormProps {
   mode: 'login' | 'signup';
@@ -13,6 +14,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
   const [message, setMessage] = useState('');
+  const { showToast } = useToast();
   const supabase = createSupabaseBrowser();
 
   async function handleEmailAuth(e: React.FormEvent) {
@@ -31,8 +33,10 @@ export default function AuthForm({ mode }: AuthFormProps) {
       });
       if (error) {
         setError(error.message);
+        showToast(error.message, 'error');
       } else {
         setMessage('Check your email for a confirmation link.');
+        showToast('Check your email for a confirmation link', 'success');
       }
     } else {
       const { error } = await supabase.auth.signInWithPassword({
@@ -41,6 +45,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
       });
       if (error) {
         setError(error.message);
+        showToast(error.message, 'error');
       } else {
         window.location.href = '/';
       }
@@ -60,6 +65,7 @@ export default function AuthForm({ mode }: AuthFormProps) {
     });
     if (error) {
       setError(error.message);
+      showToast(error.message, 'error');
       setLoading(false);
     }
   }
@@ -79,8 +85,10 @@ export default function AuthForm({ mode }: AuthFormProps) {
     });
     if (error) {
       setError(error.message);
+      showToast(error.message, 'error');
     } else {
       setMessage('Check your email for a magic link.');
+      showToast('Check your email for a magic link', 'success');
     }
     setLoading(false);
   }

@@ -56,3 +56,20 @@ export async function POST(request: NextRequest) {
 
   return NextResponse.json({ message: "You're in! We'll send you the good stuff." });
 }
+
+export async function GET() {
+  const { count, error } = await supabase
+    .from('newsletter_subscribers')
+    .select('*', { count: 'exact', head: true })
+    .is('unsubscribed_at', null);
+
+  if (error) {
+    console.error('Newsletter count error:', error);
+    return NextResponse.json({ count: 0 }, { status: 500 });
+  }
+
+  return NextResponse.json(
+    { count: count ?? 0 },
+    { headers: { 'Cache-Control': 'public, max-age=3600' } }
+  );
+}

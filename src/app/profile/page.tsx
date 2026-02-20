@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useAuth } from '@/components/AuthProvider';
 import { getProfile, updateProfile, getBookmarkedTools } from '@/lib/auth-queries';
 import ToolGrid from '@/components/ToolGrid';
@@ -117,9 +118,19 @@ export default function ProfilePage() {
             </div>
           ) : (
             <>
-              <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
-                {profile?.display_name || user.email?.split('@')[0]}
-              </h1>
+              <div className="flex items-center gap-3">
+                <h1 className="text-2xl font-bold text-zinc-900 dark:text-zinc-100">
+                  {profile?.display_name || user.email?.split('@')[0]}
+                </h1>
+                {profile?.display_name && (
+                  <Link
+                    href={`/u/${encodeURIComponent(profile.display_name)}`}
+                    className="rounded-md border border-zinc-300 px-2 py-0.5 text-xs text-zinc-500 hover:bg-zinc-50 hover:text-zinc-700 dark:border-zinc-600 dark:text-zinc-400 dark:hover:bg-zinc-800 dark:hover:text-zinc-300"
+                  >
+                    View public profile
+                  </Link>
+                )}
+              </div>
               {profile?.bio && (
                 <p className="mt-1 text-sm text-zinc-500 dark:text-zinc-400">{profile.bio}</p>
               )}

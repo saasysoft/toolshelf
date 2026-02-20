@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import SubmitToolForm from '@/components/SubmitToolForm';
+import AuthGate from '@/components/AuthGate';
 
 export const metadata: Metadata = {
   title: 'Submit a Tool — ToolShelf',
@@ -25,9 +26,11 @@ export default function SubmitPage() {
         We review every submission and enrich it with quality scores.
       </p>
 
-      <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
-        <SubmitToolForm />
-      </div>
+      <AuthGate message="Sign in to submit a developer tool to ToolShelf. We review every submission and enrich it with quality scores.">
+        <div className="rounded-xl border border-zinc-200 bg-white p-6 dark:border-zinc-800 dark:bg-zinc-900">
+          <SubmitToolForm />
+        </div>
+      </AuthGate>
     </div>
   );
 }
