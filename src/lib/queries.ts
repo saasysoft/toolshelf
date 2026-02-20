@@ -1,5 +1,6 @@
 import { supabase } from './supabase';
 import type { Tool, Category, Collection, ToolFilters } from '@/types/tool';
+import { slugify, slugToQueryValues } from '@/lib/landing-pages';
 
 const TOOLS_PER_PAGE = 24;
 
@@ -255,6 +256,76 @@ export async function getAllCategorySlugs(): Promise<string[]> {
       .select('slug');
     if (error) return [];
     return (data || []).map((c: { slug: string }) => c.slug);
+  } catch {
+    return [];
+  }
+}
+
+export async function getDistinctDimensions(minCount = 3): Promise<{ slug: string; count: number }[]> {
+  try {
+    const { data, error } = await supabase
+      .from('tools')
+      .select('languages, works_with');
+    if (error || !data) return [];
+
+    const counts = new Map<string, number>();
+    for (const row of data) {
+      const values = [
+        ...(row.languages || []),
+        ...(row.works_with || []),
+      ];
+      for (const v of values) {
+        const s = slugify(v);
+        if (s && s !== 'unknown') counts.set(s, (counts.get(s) || 0) + 1);
+      }
+    }
+
+    return Array.from(counts.entries())
+      .filter(([, count]) => count >= minCount)
+      .map(([slug, count]) => ({ slug, count }))
+      .sort((a, b) => b.count - a.count);
+  } catch {
+    return [];
+  }
+}
+
+export async function getToolsByDimension(dimensionSlug: string): Promise<Tool[]> {
+  try {
+    const values = slugToQueryValues(dimensionSlug);
+    const map = new Map<string, Tool>();
+
+    for (const val of values) {
+      const [{ data: langData }, { data: worksData }] = await Promise.all([
+        supabase.from('tools').select('*').contains('languages', [val]),
+        supabase.from('tools').select('*').contains('works_with', [val]),
+      ]);
+      for (const tool of [...(langData || []), ...(worksData || [])]) {
+        map.set(tool.slug, tool as Tool);
+      }
+    }
+
+    return Array.from(map.values()).sort((a, b) => b.quality_score - a.quality_score);
+  } catch {
+    return [];
+  }
+}
+
+export async function getToolsByCategoryAndDimension(category: string, dimensionSlug: string): Promise<Tool[]> {
+  try {
+    const values = slugToQueryValues(dimensionSlug);
+    const map = new Map<string, Tool>();
+
+    for (const val of values) {
+      const [{ data: langData }, { data: worksData }] = await Promise.all([
+        supabase.from('tools').select('*').eq('category', category).contains('languages', [val]),
+        supabase.from('tools').select('*').eq('category', category).contains('works_with', [val]),
+      ]);
+      for (const tool of [...(langData || []), ...(worksData || [])]) {
+        map.set(tool.slug, tool as Tool);
+      }
+    }
+
+    return Array.from(map.values()).sort((a, b) => b.quality_score - a.quality_score);
   } catch {
     return [];
   }

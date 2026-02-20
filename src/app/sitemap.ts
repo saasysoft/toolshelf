@@ -1,17 +1,33 @@
 import type { MetadataRoute } from 'next';
-import { getAllToolSlugs, getAllCategorySlugs, getAllCollectionSlugs } from '@/lib/queries';
+import { getAllToolSlugs, getAllCategorySlugs, getAllCollectionSlugs, getDistinctDimensions, getToolsByCategoryAndDimension } from '@/lib/queries';
 import { getAllPosts } from '@/lib/blog';
 
 const BASE_URL = 'https://toolshelf.dev';
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const [toolSlugs, categorySlugs, collectionSlugs] = await Promise.all([
+  const [toolSlugs, categorySlugs, collectionSlugs, dimensions] = await Promise.all([
     getAllToolSlugs(),
     getAllCategorySlugs(),
     getAllCollectionSlugs(),
+    getDistinctDimensions(),
   ]);
 
   const blogPosts = getAllPosts();
+
+  // Build cross-product landing pages (category × dimension with 3+ tools)
+  const crossProductPages: { category: string; slug: string }[] = [];
+  await Promise.all(
+    categorySlugs.map(async (cat) => {
+      await Promise.all(
+        dimensions.map(async ({ slug }) => {
+          const tools = await getToolsByCategoryAndDimension(cat, slug);
+          if (tools.length >= 3) {
+            crossProductPages.push({ category: cat, slug });
+          }
+        }),
+      );
+    }),
+  );
 
   const staticPages: MetadataRoute.Sitemap = [
     { url: BASE_URL, changeFrequency: 'daily', priority: 1.0 },
@@ -52,6 +68,18 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: 0.7,
   }));
 
+  const bestSinglePages: MetadataRoute.Sitemap = dimensions.map(({ slug }) => ({
+    url: `${BASE_URL}/best/${slug}`,
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  }));
+
+  const bestCrossPages: MetadataRoute.Sitemap = crossProductPages.map(({ category, slug }) => ({
+    url: `${BASE_URL}/best/${category}/${slug}`,
+    changeFrequency: 'weekly',
+    priority: 0.7,
+  }));
+
   return [
     ...staticPages,
     ...categoryPages,
@@ -59,5 +87,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     ...toolPages,
     ...alternativePages,
     ...blogPages,
+    ...bestSinglePages,
+    ...bestCrossPages,
   ];
 }
